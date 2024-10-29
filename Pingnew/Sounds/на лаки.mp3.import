@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://bixlusbcdb3kr"
+path="res://.godot/imported/на лаки.mp3-857522cfb621a6f3e4211e49de47864d.mp3str"
+
+[deps]
+
+source_file="res://Sounds/на лаки.mp3"
+dest_files=["res://.godot/imported/на лаки.mp3-857522cfb621a6f3e4211e49de47864d.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

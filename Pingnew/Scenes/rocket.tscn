@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://llrf5fflftwt"]
+
+[ext_resource type="Script" path="res://Scripts/rocket.gd" id="1_1k284"]
+[ext_resource type="Texture2D" uid="uid://cpcijuk3yn0xn" path="res://Sprites/rocket.png" id="2_lkgbc"]
+
+[node name="rocket" type="Node2D"]
+position = Vector2(-100, 0)
+script = ExtResource("1_1k284")
+
+[node name="rocketsprite" type="Sprite2D" parent="."]
+rotation = 1.5708
+scale = Vector2(0.1, 0.2)
+texture = ExtResource("2_lkgbc")

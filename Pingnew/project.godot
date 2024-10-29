@@ -1,0 +1,88 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=5
+
+[application]
+
+config/name="pingnew"
+config/name_localized={
+"ru": "лучшая игра"
+}
+config/description="даааа"
+config/version="1.11"
+run/main_scene="res://Scenes/start.tscn"
+config/use_custom_user_dir=true
+config/custom_user_dir_name="pingpongsaves"
+config/quit_on_go_back=false
+config/features=PackedStringArray("4.3", "Mobile")
+boot_splash/bg_color=Color(0.248328, 0.380827, 0.286199, 1)
+boot_splash/image="res://Icons/splash.png"
+boot_splash/use_filter=false
+config/icon="res://Icons/icon.png"
+boot_splash/minimum_display_time=200
+
+[audio]
+
+buses/default_bus_layout="res://Sounds/default_bus_layout.tres"
+
+[autoload]
+
+Configfile="*res://save/configfile.gd"
+Configcolor="*res://save/configcolor.gd"
+Difficulty="*res://save/difficulty.gd"
+
+[display]
+
+window/size/viewport_width=648
+window/size/viewport_height=1152
+window/size/mode=4
+window/size/borderless=true
+window/stretch/mode="viewport"
+window/stretch/aspect="ignore"
+window/handheld/orientation=1
+
+[input]
+
+left={
+"deadzone": 0.5,
+"events": []
+}
+right={
+"deadzone": 0.5,
+"events": []
+}
+stop={
+"deadzone": 0.5,
+"events": []
+}
+left_1={
+"deadzone": 0.5,
+"events": []
+}
+right_1={
+"deadzone": 0.5,
+"events": []
+}
+spawn={
+"deadzone": 0.5,
+"events": []
+}
+
+[input_devices]
+
+pointing/emulate_touch_from_mouse=true
+
+[internationalization]
+
+locale/locale_filter_mode=1
+
+[rendering]
+
+renderer/rendering_method="gl_compatibility"
+renderer/rendering_method.mobile="gl_compatibility"

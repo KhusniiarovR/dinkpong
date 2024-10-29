@@ -1,0 +1,310 @@
+[gd_scene load_steps=3 format=3 uid="uid://crbohdta8nxgq"]
+
+[ext_resource type="Script" path="res://Scripts/ColorMenu.gd" id="1_r8sv4"]
+[ext_resource type="Texture2D" uid="uid://cm8hameegblnv" path="res://Sprites/back_arrow.png" id="2_v6oy5"]
+
+[node name="ColorMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_r8sv4")
+
+[node name="backgroundrect" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.0352941, 0.0156863, 0.133333, 1)
+
+[node name="back_to_menu" type="Button" parent="."]
+top_level = true
+layout_mode = 0
+offset_right = 24.0
+offset_bottom = 24.0
+scale = Vector2(5, 5)
+theme_override_font_sizes/font_size = 60
+icon = ExtResource("2_v6oy5")
+
+[node name="Control1" type="Control" parent="."]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="ColorRect1" type="ColorRect" parent="Control1"]
+layout_mode = 2
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 509.0
+offset_top = 110.0
+offset_right = 604.0
+offset_bottom = 610.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorPicker1" type="ColorPicker" parent="Control1"]
+layout_mode = 2
+offset_left = 80.0
+offset_top = 130.0
+offset_right = 499.0
+offset_bottom = 640.0
+edit_alpha = false
+sampler_visible = false
+color_modes_visible = false
+hex_visible = false
+presets_visible = false
+
+[node name="Label1" type="Label" parent="Control1"]
+layout_mode = 2
+offset_left = 450.0
+offset_top = 60.0
+offset_right = 648.0
+offset_bottom = 125.0
+theme_override_font_sizes/font_size = 45
+text = "игрок 1"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Control2" type="Control" parent="."]
+visible = false
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="ColorRect2" type="ColorRect" parent="Control2"]
+layout_mode = 2
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 509.0
+offset_top = 110.0
+offset_right = 604.0
+offset_bottom = 610.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorPicker2" type="ColorPicker" parent="Control2"]
+layout_mode = 2
+offset_left = 80.0
+offset_top = 130.0
+offset_right = 499.0
+offset_bottom = 640.0
+edit_alpha = false
+sampler_visible = false
+color_modes_visible = false
+hex_visible = false
+presets_visible = false
+
+[node name="Label2" type="Label" parent="Control2"]
+layout_mode = 2
+offset_left = 450.0
+offset_top = 60.0
+offset_right = 648.0
+offset_bottom = 125.0
+theme_override_font_sizes/font_size = 45
+text = "игрок 2"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Control3" type="Control" parent="."]
+visible = false
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="ColorRect3" type="ColorRect" parent="Control3"]
+layout_mode = 2
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 509.0
+offset_top = 110.0
+offset_right = 604.0
+offset_bottom = 610.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorPicker3" type="ColorPicker" parent="Control3"]
+layout_mode = 2
+offset_left = 80.0
+offset_top = 130.0
+offset_right = 499.0
+offset_bottom = 640.0
+edit_alpha = false
+sampler_visible = false
+color_modes_visible = false
+hex_visible = false
+presets_visible = false
+
+[node name="Label3" type="Label" parent="Control3"]
+layout_mode = 2
+offset_left = 450.0
+offset_top = 60.0
+offset_right = 648.0
+offset_bottom = 125.0
+theme_override_font_sizes/font_size = 45
+text = "БОТ"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Control4" type="Control" parent="."]
+visible = false
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="ColorRect4" type="ColorRect" parent="Control4"]
+layout_mode = 2
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 509.0
+offset_top = 110.0
+offset_right = 604.0
+offset_bottom = 610.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorPicker4" type="ColorPicker" parent="Control4"]
+layout_mode = 2
+offset_left = 80.0
+offset_top = 130.0
+offset_right = 499.0
+offset_bottom = 640.0
+edit_alpha = false
+sampler_visible = false
+color_modes_visible = false
+hex_visible = false
+presets_visible = false
+
+[node name="Label4" type="Label" parent="Control4"]
+layout_mode = 2
+offset_left = 450.0
+offset_top = 60.0
+offset_right = 648.0
+offset_bottom = 125.0
+theme_override_font_sizes/font_size = 45
+text = "МЯЧ"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Button1" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 30.0
+offset_top = 124.0
+offset_right = 314.0
+offset_bottom = 214.0
+grow_vertical = 2
+theme_override_font_sizes/font_size = 45
+
+[node name="Labelbutton1" type="Label" parent="Button1"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 45
+text = "ИГРОК 1"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Button2" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 30.0
+offset_top = 274.0
+offset_right = 314.0
+offset_bottom = 364.0
+grow_vertical = 2
+theme_override_font_sizes/font_size = 45
+
+[node name="Labelbutton2" type="Label" parent="Button2"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 45
+text = "ИГРОК 2"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Button3" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -314.0
+offset_top = 124.0
+offset_right = -30.0
+offset_bottom = 214.0
+grow_horizontal = 0
+grow_vertical = 2
+theme_override_font_sizes/font_size = 45
+
+[node name="Labelbutton3" type="Label" parent="Button3"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 45
+text = "БОТ"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Button4" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -314.0
+offset_top = 274.0
+offset_right = -30.0
+offset_bottom = 364.0
+grow_horizontal = 0
+grow_vertical = 2
+theme_override_font_sizes/font_size = 45
+
+[node name="Labelbutton4" type="Label" parent="Button4"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 45
+text = "МЯЧ"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[connection signal="pressed" from="back_to_menu" to="." method="_on_back_to_menu_pressed"]
+[connection signal="color_changed" from="Control1/ColorPicker1" to="." method="_on_color_picker1_color_changed"]
+[connection signal="color_changed" from="Control2/ColorPicker2" to="." method="_on_color_picker2_color_changed"]
+[connection signal="color_changed" from="Control3/ColorPicker3" to="." method="_on_color_picker3_color_changed"]
+[connection signal="color_changed" from="Control4/ColorPicker4" to="." method="_on_color_picker4_color_changed"]
+[connection signal="pressed" from="Button1" to="." method="_on_button_1_pressed"]
+[connection signal="pressed" from="Button2" to="." method="_on_button_2_pressed"]
+[connection signal="pressed" from="Button3" to="." method="_on_button_3_pressed"]
+[connection signal="pressed" from="Button4" to="." method="_on_button4_pressed"]

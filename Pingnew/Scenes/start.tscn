@@ -1,0 +1,342 @@
+[gd_scene load_steps=12 format=3 uid="uid://y42xjnvi6x5u"]
+
+[ext_resource type="Script" path="res://Scripts/start.gd" id="1_iwob6"]
+[ext_resource type="Texture2D" uid="uid://bm6lu8t0ads7l" path="res://Sprites/coloricon.png" id="3_e73mc"]
+[ext_resource type="Texture2D" uid="uid://c0bmtelx5n2ki" path="res://Sprites/settingsicon.png" id="4_j5p5i"]
+[ext_resource type="Script" path="res://Scripts/controlspacebg.gd" id="5_pjnlp"]
+[ext_resource type="Texture2D" uid="uid://dobudjmwlt2v" path="res://Sprites/Figure_1.png" id="6_2wafc"]
+[ext_resource type="Texture2D" uid="uid://cm8hameegblnv" path="res://Sprites/back_arrow.png" id="6_u61ri"]
+[ext_resource type="Texture2D" uid="uid://rlbqqbag8rl1" path="res://Sprites/Figure_2.png" id="7_742fo"]
+[ext_resource type="Script" path="res://Scripts/starrysky.gd" id="8_asont"]
+[ext_resource type="Texture2D" uid="uid://ufcs6oc2a8vv" path="res://Sprites/Sky.png" id="9_4ycg5"]
+[ext_resource type="PackedScene" uid="uid://llrf5fflftwt" path="res://Scenes/rocket.tscn" id="9_jrjot"]
+[ext_resource type="Texture2D" uid="uid://dfy8rdnmtb6jd" path="res://Sprites/i.svg" id="10_e5obp"]
+
+[node name="Node" type="Node"]
+script = ExtResource("1_iwob6")
+
+[node name="Controllevel" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="plays" type="Button" parent="Controllevel"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -275.0
+offset_top = 300.0
+offset_right = 277.0
+offset_bottom = 480.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(0, 1, 1, 1)
+theme_override_font_sizes/font_size = 60
+text = "ИГРАТЬ С БОТОМ"
+
+[node name="friends" type="Button" parent="Controllevel"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -264.0
+offset_top = 500.0
+offset_right = 264.0
+offset_bottom = 680.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(1, 0.780392, 0.14902, 1)
+theme_override_font_sizes/font_size = 60
+text = "ИГРАТЬ С ДРУГОМ"
+
+[node name="weaky" type="Button" parent="Controllevel"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -279.0
+offset_top = 700.0
+offset_right = 281.0
+offset_bottom = 880.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(1, 0, 0, 1)
+theme_override_font_sizes/font_size = 60
+text = "БЫТЬ СЛАБЫМ"
+
+[node name="colormenu" type="Button" parent="Controllevel"]
+layout_mode = 0
+offset_right = 100.0
+offset_bottom = 100.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+
+[node name="coloricon" type="Sprite2D" parent="Controllevel/colormenu"]
+position = Vector2(52, 50)
+scale = Vector2(3, 3)
+texture = ExtResource("3_e73mc")
+
+[node name="settings" type="Button" parent="Controllevel"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -100.0
+offset_bottom = 100.0
+grow_horizontal = 0
+size_flags_horizontal = 8
+
+[node name="settingsicon" type="Sprite2D" parent="Controllevel/settings"]
+position = Vector2(52, 50)
+scale = Vector2(3, 3)
+texture = ExtResource("4_j5p5i")
+
+[node name="Controldiffbot" type="Control" parent="."]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="difficultb1" type="Button" parent="Controldiffbot"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_top = -246.0
+offset_right = 300.0
+offset_bottom = -96.0
+grow_vertical = 2
+theme_override_colors/font_color = Color(0, 1, 0, 1)
+theme_override_font_sizes/font_size = 45
+text = "ЛЕГКИЙ"
+
+[node name="difficultb2" type="Button" parent="Controldiffbot"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_top = 4.0
+offset_right = 300.0
+offset_bottom = 154.0
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 0.760784, 0.0901961, 1)
+theme_override_font_sizes/font_size = 45
+text = "СРЕДНИЙ"
+
+[node name="difficultb3" type="Button" parent="Controldiffbot"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_top = 254.0
+offset_right = 300.0
+offset_bottom = 404.0
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 0.180392, 0.254902, 1)
+theme_override_font_sizes/font_size = 45
+text = "ТЯЖЕЛЫЙ"
+
+[node name="difficulth1" type="Button" parent="Controldiffbot"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -300.0
+offset_top = 330.0
+offset_bottom = 480.0
+grow_horizontal = 0
+theme_override_colors/font_color = Color(0.894118, 0.160784, 0.65098, 1)
+theme_override_font_sizes/font_size = 45
+text = "ЛЕГКИЙ"
+
+[node name="difficulth2" type="Button" parent="Controldiffbot"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -300.0
+offset_top = 580.0
+offset_bottom = 730.0
+grow_horizontal = 0
+theme_override_colors/font_color = Color(0.32549, 0.160784, 0.65098, 1)
+theme_override_font_sizes/font_size = 45
+text = "СРЕДНИЙ"
+
+[node name="difficulth3" type="Button" parent="Controldiffbot"]
+visible = false
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -300.0
+offset_top = 830.0
+offset_bottom = 980.0
+grow_horizontal = 0
+theme_override_colors/font_color = Color(0.894118, 0.160784, 0.65098, 1)
+theme_override_font_sizes/font_size = 45
+text = "ТЯЖЕЛЫЙ"
+
+[node name="modetext1" type="Label" parent="Controldiffbot"]
+layout_mode = 1
+offset_top = 120.0
+offset_right = 300.0
+offset_bottom = 320.0
+theme_override_colors/font_color = Color(0.590441, 0.590441, 0.590441, 1)
+theme_override_font_sizes/font_size = 45
+text = "ОБЫЧНЫЙ РЕЖИМ"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="modetext2" type="Label" parent="Controldiffbot"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -300.0
+offset_top = 120.0
+offset_bottom = 320.0
+grow_horizontal = 0
+theme_override_colors/font_color = Color(0.741176, 0, 1, 1)
+theme_override_font_sizes/font_size = 45
+text = "РЕЖИМ ХАОСА"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="back_to_menu" type="Button" parent="Controldiffbot"]
+layout_mode = 0
+offset_right = 24.0
+offset_bottom = 24.0
+scale = Vector2(5, 5)
+theme_override_font_sizes/font_size = 60
+icon = ExtResource("6_u61ri")
+
+[node name="Controlleave" type="Control" parent="."]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="leavelabel" type="Label" parent="Controlleave"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -214.0
+offset_top = -376.0
+offset_right = 222.0
+offset_bottom = 270.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 0, 0, 1)
+theme_override_font_sizes/font_size = 80
+text = "ТЫ ТОЧНО ХОЧЕШЬ ВЫЙТИ?"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 1
+
+[node name="yesleave" type="Button" parent="Controlleave"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -4.0
+offset_top = 156.0
+offset_right = 296.0
+offset_bottom = 426.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 0, 1, 1)
+theme_override_font_sizes/font_size = 80
+text = "ДА"
+
+[node name="noleave" type="Button" parent="Controlleave"]
+modulate = Color(0, 1, 1, 1)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -324.0
+offset_top = 156.0
+offset_right = -24.0
+offset_bottom = 426.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 80
+text = "НЕТ"
+
+[node name="controlspacebg" type="Node2D" parent="."]
+script = ExtResource("5_pjnlp")
+
+[node name="galaxy_1" type="Sprite2D" parent="controlspacebg"]
+z_index = -1
+scale = Vector2(0.12, 0.12)
+texture = ExtResource("6_2wafc")
+
+[node name="galaxy_2" type="Sprite2D" parent="controlspacebg"]
+z_index = -1
+scale = Vector2(0.12, 0.12)
+texture = ExtResource("6_2wafc")
+
+[node name="galaxy_3" type="Sprite2D" parent="controlspacebg"]
+z_index = -1
+scale = Vector2(0.12, 0.12)
+texture = ExtResource("7_742fo")
+
+[node name="galaxy_4" type="Sprite2D" parent="controlspacebg"]
+z_index = -1
+scale = Vector2(0.12, 0.12)
+texture = ExtResource("7_742fo")
+
+[node name="фон старт" type="ParallaxBackground" parent="controlspacebg"]
+script = ExtResource("8_asont")
+
+[node name="ParallaxLayer" type="ParallaxLayer" parent="controlspacebg/фон старт"]
+motion_mirroring = Vector2(676, 1177)
+
+[node name="Sky" type="Sprite2D" parent="controlspacebg/фон старт/ParallaxLayer"]
+position = Vector2(328, 575.392)
+scale = Vector2(0.412195, 1.14639)
+texture = ExtResource("9_4ycg5")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+layer = -3
+follow_viewport_enabled = true
+
+[node name="rocket" parent="." instance=ExtResource("9_jrjot")]
+z_index = -1
+
+[node name="spawnrocket" type="TouchScreenButton" parent="."]
+modulate = Color(1, 1, 1, 0)
+z_index = -1
+scale = Vector2(5.28906, 9.03906)
+texture_normal = ExtResource("10_e5obp")
+action = "spawn"
+
+[connection signal="pressed" from="Controllevel/plays" to="." method="_on_plays_pressed"]
+[connection signal="pressed" from="Controllevel/friends" to="." method="_on_friends_pressed"]
+[connection signal="pressed" from="Controllevel/weaky" to="." method="_on_weaky_pressed"]
+[connection signal="pressed" from="Controllevel/colormenu" to="." method="_on_colormenu_pressed"]
+[connection signal="pressed" from="Controllevel/settings" to="." method="_on_settings_pressed"]
+[connection signal="pressed" from="Controldiffbot/difficultb1" to="." method="_on_difficultb_1_pressed"]
+[connection signal="pressed" from="Controldiffbot/difficultb2" to="." method="_on_difficultb_2_pressed"]
+[connection signal="pressed" from="Controldiffbot/difficultb3" to="." method="_on_difficultb_3_pressed"]
+[connection signal="pressed" from="Controldiffbot/difficulth1" to="." method="_on_difficulth_1_pressed"]
+[connection signal="pressed" from="Controldiffbot/difficulth2" to="." method="_on_difficulth_2_pressed"]
+[connection signal="pressed" from="Controldiffbot/back_to_menu" to="." method="_on_back_to_menu_pressed"]
+[connection signal="pressed" from="Controlleave/yesleave" to="." method="_on_yesleave_pressed"]
+[connection signal="pressed" from="Controlleave/noleave" to="." method="_on_noleave_pressed"]

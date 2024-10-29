@@ -1,0 +1,168 @@
+[gd_scene load_steps=8 format=3 uid="uid://djb8heldcf235"]
+
+[ext_resource type="Script" path="res://Scripts/settings.gd" id="1_1ivv6"]
+[ext_resource type="Script" path="res://Scripts/starrysky.gd" id="3_6paav"]
+[ext_resource type="AudioStream" uid="uid://brhvs6necbim7" path="res://Sounds/Dink_n.mp3" id="3_csksw"]
+[ext_resource type="Texture2D" uid="uid://cm8hameegblnv" path="res://Sprites/back_arrow.png" id="4_piylg"]
+[ext_resource type="AudioStream" uid="uid://bghrwfof83cj5" path="res://Sounds/Лох.mp3" id="6_tur6f"]
+[ext_resource type="Texture2D" uid="uid://ufcs6oc2a8vv" path="res://Sprites/Sky.png" id="7_7v2un"]
+[ext_resource type="AudioStream" uid="uid://bixlusbcdb3kr" path="res://Sounds/на лаки.mp3" id="7_lybrt"]
+
+[node name="settings" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_1ivv6")
+
+[node name="container" type="GridContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -284.0
+offset_top = -253.0
+offset_right = 259.0
+offset_bottom = -39.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/h_separation = 60
+theme_override_constants/v_separation = 30
+columns = 2
+
+[node name="dinklabel" type="Label" parent="container"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 40
+text = "дынк"
+
+[node name="dinkslider" type="HSlider" parent="container"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+max_value = 1.0
+step = 0.05
+value = 1.0
+
+[node name="goallabel" type="Label" parent="container"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 40
+text = "гол"
+horizontal_alignment = 1
+
+[node name="goalslider" type="HSlider" parent="container"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+max_value = 1.0
+step = 0.05
+value = 1.0
+
+[node name="back_to_menu" type="Button" parent="."]
+layout_mode = 1
+offset_right = 24.0
+offset_bottom = 24.0
+scale = Vector2(5, 5)
+theme_override_font_sizes/font_size = 60
+icon = ExtResource("4_piylg")
+
+[node name="check sounds dink" type="Button" parent="."]
+modulate = Color(1, 0, 1, 1)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -150.0
+offset_top = -31.5
+offset_right = 150.0
+offset_bottom = 68.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 50
+text = "звук дынк"
+
+[node name="check sounds loh" type="Button" parent="."]
+modulate = Color(1, 0, 1, 1)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -150.0
+offset_top = 74.0
+offset_right = 150.0
+offset_bottom = 174.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 50
+text = "звук лох"
+
+[node name="check sounds lucky" type="Button" parent="."]
+modulate = Color(1, 0, 1, 1)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -150.0
+offset_top = 179.0
+offset_right = 150.0
+offset_bottom = 279.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 50
+text = "звук лаки"
+
+[node name="dink" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_csksw")
+volume_db = 5.0
+bus = &"dink"
+
+[node name="loh" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("6_tur6f")
+volume_db = -5.0
+bus = &"goal"
+
+[node name="lucky" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("7_lybrt")
+volume_db = 10.0
+bus = &"goal"
+
+[node name="fullscreen" type="Button" parent="."]
+visible = false
+modulate = Color(1, 0, 0, 1)
+layout_mode = 0
+offset_left = 141.0
+offset_top = 285.0
+offset_right = 299.0
+offset_bottom = 464.0
+theme_override_font_sizes/font_size = 40
+text = "ПОЛНЫЙ ЭКРАН"
+
+[node name="фон старт" type="ParallaxBackground" parent="."]
+script = ExtResource("3_6paav")
+
+[node name="ParallaxLayer" type="ParallaxLayer" parent="фон старт"]
+motion_mirroring = Vector2(676, 1177)
+
+[node name="Sky" type="Sprite2D" parent="фон старт/ParallaxLayer"]
+position = Vector2(328, 575.392)
+scale = Vector2(0.412195, 1.14639)
+texture = ExtResource("7_7v2un")
+
+[connection signal="drag_ended" from="container/dinkslider" to="." method="_on_dinkslider_drag_ended"]
+[connection signal="value_changed" from="container/dinkslider" to="." method="_on_dinkslider_value_changed"]
+[connection signal="drag_ended" from="container/goalslider" to="." method="_on_goalslider_drag_ended"]
+[connection signal="value_changed" from="container/goalslider" to="." method="_on_goalslider_value_changed"]
+[connection signal="pressed" from="back_to_menu" to="." method="_on_back_to_menu_pressed"]
+[connection signal="pressed" from="check sounds dink" to="." method="_on_check_sounds_dink_pressed"]
+[connection signal="pressed" from="check sounds loh" to="." method="_on_check_sounds_loh_pressed"]
+[connection signal="pressed" from="check sounds lucky" to="." method="_on_check_sounds_lucky_pressed"]
+[connection signal="toggled" from="fullscreen" to="." method="_on_fullscreen_toggled"]
