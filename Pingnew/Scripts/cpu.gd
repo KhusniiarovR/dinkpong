@@ -3,24 +3,23 @@ extends StaticBody2D
 var ball_pos : Vector2
 var dist : int
 var move_by : int
-var win_height : int
+var win_height : float
 var p_height : int
-
+var paddle_speed = 150
 
 func _ready():
-	@warning_ignore("narrowing_conversion")
-	win_height = get_viewport_rect().size.y
-	p_height = $ColorRect.get_size().y
-
+	win_height = get_viewport_rect().size.x
+	var difficulty_settings = Difficulty.load_difficulty_settings()
+	paddle_speed = difficulty_settings.bot_speed
+	scale.x = difficulty_settings.bot_size
+	p_height = $ColorRect.get_size().x * scale.x
 
 func _process(delta):
 	ball_pos = $"../ball".position
-	dist = position.y - ball_pos.y
-	if dist > get_parent().paddle_enemy_speed * delta:
-		move_by = get_parent().paddle_enemy_speed * delta * (dist / abs(dist))
-	elif ball_pos.x - position.x <= 30:
-				move_by = dist + (randi_range(-1,1) * 55)
-	else:
-		move_by = dist
-	position.y -= move_by
-	position.y = clamp(position.y, p_height/2, win_height - p_height/2)
+	dist = position.x - ball_pos.x
+	if dist > paddle_speed * delta and dist > 10:
+		move_by = 1.3 * (paddle_speed * delta * (dist / abs(dist)))
+	elif dist <= 10:
+		move_by = dist / 2
+	position.x -= move_by
+	position.x = clamp(position.x, p_height/2, win_height - p_height/2)

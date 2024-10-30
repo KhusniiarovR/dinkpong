@@ -12,8 +12,8 @@ func _ready():
 
 func _process(delta):
 	if Input.is_action_pressed("left"):
-		position.x -= paddle_speed* delta
+		position.x -= paddle_speed * delta
 	elif Input.is_action_pressed("right"):
 		position.x += paddle_speed * delta
-
+	
 	position.x = clamp(position.x, p_height/2, win_height - p_height/2)

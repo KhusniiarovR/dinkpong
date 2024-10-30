@@ -1,16 +1,23 @@
-[gd_scene load_steps=12 format=3 uid="uid://y42xjnvi6x5u"]
+[gd_scene load_steps=14 format=3 uid="uid://y42xjnvi6x5u"]
 
 [ext_resource type="Script" path="res://Scripts/start.gd" id="1_iwob6"]
+[ext_resource type="Texture2D" uid="uid://dafn8d7kwuhh6" path="res://Sprites/buttons1.png" id="2_x3417"]
+[ext_resource type="Texture2D" uid="uid://dkmwlq1rapl62" path="res://Sprites/settings_icon1.png" id="3_6c25l"]
 [ext_resource type="Texture2D" uid="uid://bm6lu8t0ads7l" path="res://Sprites/coloricon.png" id="3_e73mc"]
-[ext_resource type="Texture2D" uid="uid://c0bmtelx5n2ki" path="res://Sprites/settingsicon.png" id="4_j5p5i"]
 [ext_resource type="Script" path="res://Scripts/controlspacebg.gd" id="5_pjnlp"]
-[ext_resource type="Texture2D" uid="uid://dobudjmwlt2v" path="res://Sprites/Figure_1.png" id="6_2wafc"]
 [ext_resource type="Texture2D" uid="uid://cm8hameegblnv" path="res://Sprites/back_arrow.png" id="6_u61ri"]
 [ext_resource type="Texture2D" uid="uid://rlbqqbag8rl1" path="res://Sprites/Figure_2.png" id="7_742fo"]
+[ext_resource type="Texture2D" uid="uid://b25gk211pmima" path="res://Sprites/Figure_3.png" id="7_f3rce"]
 [ext_resource type="Script" path="res://Scripts/starrysky.gd" id="8_asont"]
 [ext_resource type="Texture2D" uid="uid://ufcs6oc2a8vv" path="res://Sprites/Sky.png" id="9_4ycg5"]
 [ext_resource type="PackedScene" uid="uid://llrf5fflftwt" path="res://Scenes/rocket.tscn" id="9_jrjot"]
 [ext_resource type="Texture2D" uid="uid://dfy8rdnmtb6jd" path="res://Sprites/i.svg" id="10_e5obp"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_6uj8o"]
+texture = ExtResource("2_x3417")
+texture_margin_left = 5.0
+texture_margin_right = 5.0
+modulate_color = Color(1, 1, 1, 0.658824)
 
 [node name="Node" type="Node"]
 script = ExtResource("1_iwob6")
@@ -33,8 +40,12 @@ offset_top = 300.0
 offset_right = 277.0
 offset_bottom = 480.0
 grow_horizontal = 2
-theme_override_colors/font_color = Color(0, 1, 1, 1)
+theme_override_colors/font_color = Color(0.419608, 0.494118, 0.945098, 1)
 theme_override_font_sizes/font_size = 60
+theme_override_styles/hover_pressed = SubResource("StyleBoxTexture_6uj8o")
+theme_override_styles/hover = SubResource("StyleBoxTexture_6uj8o")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_6uj8o")
+theme_override_styles/normal = SubResource("StyleBoxTexture_6uj8o")
 text = "ИГРАТЬ С БОТОМ"
 
 [node name="friends" type="Button" parent="Controllevel"]
@@ -47,8 +58,12 @@ offset_top = 500.0
 offset_right = 264.0
 offset_bottom = 680.0
 grow_horizontal = 2
-theme_override_colors/font_color = Color(1, 0.780392, 0.14902, 1)
-theme_override_font_sizes/font_size = 60
+theme_override_colors/font_color = Color(1, 1, 0.14902, 1)
+theme_override_font_sizes/font_size = 58
+theme_override_styles/hover_pressed = SubResource("StyleBoxTexture_6uj8o")
+theme_override_styles/hover = SubResource("StyleBoxTexture_6uj8o")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_6uj8o")
+theme_override_styles/normal = SubResource("StyleBoxTexture_6uj8o")
 text = "ИГРАТЬ С ДРУГОМ"
 
 [node name="weaky" type="Button" parent="Controllevel"]
@@ -63,12 +78,18 @@ offset_bottom = 880.0
 grow_horizontal = 2
 theme_override_colors/font_color = Color(1, 0, 0, 1)
 theme_override_font_sizes/font_size = 60
+theme_override_styles/hover_pressed = SubResource("StyleBoxTexture_6uj8o")
+theme_override_styles/hover = SubResource("StyleBoxTexture_6uj8o")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_6uj8o")
+theme_override_styles/normal = SubResource("StyleBoxTexture_6uj8o")
 text = "БЫТЬ СЛАБЫМ"
 
 [node name="colormenu" type="Button" parent="Controllevel"]
 layout_mode = 0
-offset_right = 100.0
-offset_bottom = 100.0
+offset_left = -4.0
+offset_top = -5.0
+offset_right = 97.0
+offset_bottom = 94.0
 size_flags_horizontal = 0
 size_flags_vertical = 0
 
@@ -82,15 +103,15 @@ layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
-offset_left = -100.0
+offset_left = -98.0
 offset_bottom = 100.0
 grow_horizontal = 0
 size_flags_horizontal = 8
 
 [node name="settingsicon" type="Sprite2D" parent="Controllevel/settings"]
-position = Vector2(52, 50)
-scale = Vector2(3, 3)
-texture = ExtResource("4_j5p5i")
+position = Vector2(48, 49)
+scale = Vector2(0.796875, 0.765625)
+texture = ExtResource("3_6c25l")
 
 [node name="Controldiffbot" type="Control" parent="."]
 visible = false
@@ -112,6 +133,10 @@ offset_bottom = -96.0
 grow_vertical = 2
 theme_override_colors/font_color = Color(0, 1, 0, 1)
 theme_override_font_sizes/font_size = 45
+theme_override_styles/hover_pressed = SubResource("StyleBoxTexture_6uj8o")
+theme_override_styles/hover = SubResource("StyleBoxTexture_6uj8o")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_6uj8o")
+theme_override_styles/normal = SubResource("StyleBoxTexture_6uj8o")
 text = "ЛЕГКИЙ"
 
 [node name="difficultb2" type="Button" parent="Controldiffbot"]
@@ -125,6 +150,10 @@ offset_bottom = 154.0
 grow_vertical = 2
 theme_override_colors/font_color = Color(1, 0.760784, 0.0901961, 1)
 theme_override_font_sizes/font_size = 45
+theme_override_styles/hover_pressed = SubResource("StyleBoxTexture_6uj8o")
+theme_override_styles/hover = SubResource("StyleBoxTexture_6uj8o")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_6uj8o")
+theme_override_styles/normal = SubResource("StyleBoxTexture_6uj8o")
 text = "СРЕДНИЙ"
 
 [node name="difficultb3" type="Button" parent="Controldiffbot"]
@@ -138,6 +167,10 @@ offset_bottom = 404.0
 grow_vertical = 2
 theme_override_colors/font_color = Color(1, 0.180392, 0.254902, 1)
 theme_override_font_sizes/font_size = 45
+theme_override_styles/hover_pressed = SubResource("StyleBoxTexture_6uj8o")
+theme_override_styles/hover = SubResource("StyleBoxTexture_6uj8o")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_6uj8o")
+theme_override_styles/normal = SubResource("StyleBoxTexture_6uj8o")
 text = "ТЯЖЕЛЫЙ"
 
 [node name="difficulth1" type="Button" parent="Controldiffbot"]
@@ -151,6 +184,10 @@ offset_bottom = 480.0
 grow_horizontal = 0
 theme_override_colors/font_color = Color(0.894118, 0.160784, 0.65098, 1)
 theme_override_font_sizes/font_size = 45
+theme_override_styles/hover_pressed = SubResource("StyleBoxTexture_6uj8o")
+theme_override_styles/hover = SubResource("StyleBoxTexture_6uj8o")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_6uj8o")
+theme_override_styles/normal = SubResource("StyleBoxTexture_6uj8o")
 text = "ЛЕГКИЙ"
 
 [node name="difficulth2" type="Button" parent="Controldiffbot"]
@@ -164,6 +201,10 @@ offset_bottom = 730.0
 grow_horizontal = 0
 theme_override_colors/font_color = Color(0.32549, 0.160784, 0.65098, 1)
 theme_override_font_sizes/font_size = 45
+theme_override_styles/hover_pressed = SubResource("StyleBoxTexture_6uj8o")
+theme_override_styles/hover = SubResource("StyleBoxTexture_6uj8o")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_6uj8o")
+theme_override_styles/normal = SubResource("StyleBoxTexture_6uj8o")
 text = "СРЕДНИЙ"
 
 [node name="difficulth3" type="Button" parent="Controldiffbot"]
@@ -178,6 +219,10 @@ offset_bottom = 980.0
 grow_horizontal = 0
 theme_override_colors/font_color = Color(0.894118, 0.160784, 0.65098, 1)
 theme_override_font_sizes/font_size = 45
+theme_override_styles/hover_pressed = SubResource("StyleBoxTexture_6uj8o")
+theme_override_styles/hover = SubResource("StyleBoxTexture_6uj8o")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_6uj8o")
+theme_override_styles/normal = SubResource("StyleBoxTexture_6uj8o")
 text = "ТЯЖЕЛЫЙ"
 
 [node name="modetext1" type="Label" parent="Controldiffbot"]
@@ -255,11 +300,15 @@ anchor_bottom = 0.5
 offset_left = -4.0
 offset_top = 156.0
 offset_right = 296.0
-offset_bottom = 426.0
+offset_bottom = 356.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/font_color = Color(1, 0, 1, 1)
 theme_override_font_sizes/font_size = 80
+theme_override_styles/hover_pressed = SubResource("StyleBoxTexture_6uj8o")
+theme_override_styles/hover = SubResource("StyleBoxTexture_6uj8o")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_6uj8o")
+theme_override_styles/normal = SubResource("StyleBoxTexture_6uj8o")
 text = "ДА"
 
 [node name="noleave" type="Button" parent="Controlleave"]
@@ -273,10 +322,14 @@ anchor_bottom = 0.5
 offset_left = -324.0
 offset_top = 156.0
 offset_right = -24.0
-offset_bottom = 426.0
+offset_bottom = 356.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_font_sizes/font_size = 80
+theme_override_styles/hover_pressed = SubResource("StyleBoxTexture_6uj8o")
+theme_override_styles/hover = SubResource("StyleBoxTexture_6uj8o")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_6uj8o")
+theme_override_styles/normal = SubResource("StyleBoxTexture_6uj8o")
 text = "НЕТ"
 
 [node name="controlspacebg" type="Node2D" parent="."]
@@ -284,23 +337,13 @@ script = ExtResource("5_pjnlp")
 
 [node name="galaxy_1" type="Sprite2D" parent="controlspacebg"]
 z_index = -1
-scale = Vector2(0.12, 0.12)
-texture = ExtResource("6_2wafc")
+scale = Vector2(0.15, 0.15)
+texture = ExtResource("7_742fo")
 
 [node name="galaxy_2" type="Sprite2D" parent="controlspacebg"]
 z_index = -1
-scale = Vector2(0.12, 0.12)
-texture = ExtResource("6_2wafc")
-
-[node name="galaxy_3" type="Sprite2D" parent="controlspacebg"]
-z_index = -1
-scale = Vector2(0.12, 0.12)
-texture = ExtResource("7_742fo")
-
-[node name="galaxy_4" type="Sprite2D" parent="controlspacebg"]
-z_index = -1
-scale = Vector2(0.12, 0.12)
-texture = ExtResource("7_742fo")
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("7_f3rce")
 
 [node name="фон старт" type="ParallaxBackground" parent="controlspacebg"]
 script = ExtResource("8_asont")
@@ -319,6 +362,7 @@ follow_viewport_enabled = true
 
 [node name="rocket" parent="." instance=ExtResource("9_jrjot")]
 z_index = -1
+position = Vector2(-2000, 0)
 
 [node name="spawnrocket" type="TouchScreenButton" parent="."]
 modulate = Color(1, 1, 1, 0)
@@ -326,6 +370,9 @@ z_index = -1
 scale = Vector2(5.28906, 9.03906)
 texture_normal = ExtResource("10_e5obp")
 action = "spawn"
+
+[node name="Timer" type="Timer" parent="."]
+one_shot = true
 
 [connection signal="pressed" from="Controllevel/plays" to="." method="_on_plays_pressed"]
 [connection signal="pressed" from="Controllevel/friends" to="." method="_on_friends_pressed"]

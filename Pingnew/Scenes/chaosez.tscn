@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=3 uid="uid://dmtavd07jp3lh"]
+[gd_scene load_steps=27 format=3 uid="uid://dmtavd07jp3lh"]
 
 [ext_resource type="Script" path="res://Scripts/player.gd" id="1_qpyiu"]
 [ext_resource type="Script" path="res://Scripts/ballbot.gd" id="3_sk074"]
@@ -10,7 +10,9 @@
 [ext_resource type="AudioStream" uid="uid://bghrwfof83cj5" path="res://Sounds/Лох.mp3" id="9_078c6"]
 [ext_resource type="AudioStream" uid="uid://bixlusbcdb3kr" path="res://Sounds/на лаки.mp3" id="10_jpeyl"]
 [ext_resource type="PackedScene" uid="uid://coomb6j6sxjcu" path="res://Scenes/pause.tscn" id="11_wv3tx"]
+[ext_resource type="Script" path="res://Scripts/starrysky.gd" id="12_66yn8"]
 [ext_resource type="Texture2D" uid="uid://wy23bgsqla0e" path="res://Sprites/pausebutton.png" id="12_l057s"]
+[ext_resource type="Texture2D" uid="uid://ufcs6oc2a8vv" path="res://Sprites/Sky.png" id="13_fadr7"]
 
 [sub_resource type="GDScript" id="GDScript_esvj7"]
 script/source = "extends ColorRect
@@ -20,10 +22,12 @@ func _ready():
 	get_viewport().size = DisplayServer.screen_get_size()
 	get_tree().get_root().connect(\"go_back_requested\", goback)
 	var color_settings = Configcolor.load_color_settings()
+	var difficulty_settings = Difficulty.load_difficulty_settings()
 	$player1/ColorRect.color = color_settings.color1
 	$cpu/ColorRect.color = color_settings.color3
 	$ball/balltexture.modulate = color_settings.color4
-	
+	$ending/AnimationPlayer/bot_name.text = difficulty_settings.bot_name
+
 func goback():
 	if get_tree().paused:
 		get_tree().paused = false
@@ -51,9 +55,29 @@ func _on_score_up_body_entered(_body):
 
 func _process(_delta):
 	if score[0] == 3:
-		get_tree().change_scene_to_file(\"res://Scenes/start.tscn\")
+		$\".\".hide()
+		get_tree().paused = true
+		$ending.show()
+		$\"ending/фон старт\".show()
+		$ending/AnimationPlayer.play(\"WINNING\")
 	elif score[1] == 3:
-		get_tree().change_scene_to_file(\"res://Scenes/start.tscn\")
+		$\".\".hide()
+		get_tree().paused = true
+		$ending.show()
+		$\"ending/фон старт\".show()
+		$ending/AnimationPlayer.play(\"WINNING\")
+
+var time = 0
+var time_1 = 0
+func _physics_process(delta: float) -> void:
+	time += delta
+	time_1 = time*0.8
+	$blocks/StaticBody2D.position.y += sin(-time) * 3
+	$blocks/StaticBody2D2.position.y -= sin(-time_1) * 3
+
+func _on_leave_pressed() -> void:
+	get_tree().paused = false
+	get_tree().change_scene_to_file(\"res://Scenes/start.tscn\")
 "
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_obd8f"]
@@ -79,12 +103,10 @@ func _ready():
 func _process(delta):
 	ball_pos = $\"../ball\".position
 	dist = position.x - ball_pos.x
-	if dist > paddle_speed * delta:
-		move_by = paddle_speed * delta * (dist / abs(dist))
-	elif ball_pos.y - position.y <= 30:
-		move_by = dist + (randi_range(-1,1) * 55)
-	else:
-		move_by = dist
+	if dist > paddle_speed * delta and dist > 10:
+		move_by = 1.3 * (paddle_speed * delta * (dist / abs(dist)))
+	elif dist <= 10:
+		move_by = dist / 2
 	position.x -= move_by
 	position.x = clamp(position.x, p_height/2, win_height - p_height/2)
 "
@@ -124,6 +146,91 @@ size = Vector2(20, 121)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ntqwu"]
 size = Vector2(161.697, 25.1936)
+
+[sub_resource type="Animation" id="Animation_78hvk"]
+resource_name = "WINNING"
+step = 0.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimationPlayer/winning:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5, 0.99),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(-500, 430), Vector2(-200, 430), Vector2(91, 430)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimationPlayer/bot_name:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.5, 0.99),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(-500, 540), Vector2(-200, 540), Vector2(91, 540)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("AnimationPlayer/leave:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.5, 0.99),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(-500, 800), Vector2(-200, 800), Vector2(165, 800)]
+}
+
+[sub_resource type="Animation" id="Animation_hif62"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimationPlayer/winning:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-500, 430)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimationPlayer/bot_name:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-500, 540)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("AnimationPlayer/leave:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-500, 800)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_qnghj"]
+_data = {
+"RESET": SubResource("Animation_hif62"),
+"WINNING": SubResource("Animation_78hvk")
+}
 
 [node name="chaoseazy" type="ColorRect"]
 anchors_preset = 15
@@ -235,7 +342,7 @@ action = "left"
 show_behind_parent = true
 visibility_layer = 0
 position = Vector2(324, 580)
-scale = Vector2(2.57812, 4.4375)
+scale = Vector2(3.22656, 4.4375)
 texture_normal = ExtResource("7_02wi0")
 action = "right"
 
@@ -323,10 +430,10 @@ theme_override_font_sizes/font_size = 100
 text = "0"
 
 [node name="blocks" type="Node2D" parent="."]
-position = Vector2(648, 700)
+position = Vector2(648, 600)
 rotation = 1.5708
 
-[node name="StaticBody2D" type="StaticBody2D" parent="blocks"]
+[node name="StaticBody2D" type="CharacterBody2D" parent="blocks"]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="blocks/StaticBody2D"]
 position = Vector2(7, 59.5)
@@ -369,7 +476,7 @@ offset_right = 72.0
 offset_bottom = 46.0
 color = Color(0.489622, 0.489622, 0.489622, 1)
 
-[node name="StaticBody2D2" type="StaticBody2D" parent="blocks"]
+[node name="StaticBody2D2" type="CharacterBody2D" parent="blocks"]
 position = Vector2(0, 648)
 scale = Vector2(1, -1)
 
@@ -414,6 +521,73 @@ offset_right = 72.0
 offset_bottom = 46.0
 color = Color(0.489622, 0.489622, 0.489622, 1)
 
+[node name="ending" type="Node2D" parent="."]
+process_mode = 3
+visible = false
+
+[node name="фон старт" type="ParallaxBackground" parent="ending"]
+process_mode = 3
+visible = false
+script = ExtResource("12_66yn8")
+
+[node name="ParallaxLayer" type="ParallaxLayer" parent="ending/фон старт"]
+motion_mirroring = Vector2(676, 1177)
+
+[node name="Sky" type="Sprite2D" parent="ending/фон старт/ParallaxLayer"]
+position = Vector2(328, 575.392)
+scale = Vector2(0.412195, 1.14639)
+texture = ExtResource("13_fadr7")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="ending"]
+process_mode = 3
+libraries = {
+"": SubResource("AnimationLibrary_qnghj")
+}
+
+[node name="winning" type="Label" parent="ending/AnimationPlayer"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -824.0
+offset_top = -146.0
+offset_right = -358.0
+offset_bottom = -50.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 70
+text = "ТЫ ПОБЕДИЛ"
+
+[node name="bot_name" type="Label" parent="ending/AnimationPlayer"]
+offset_left = -500.0
+offset_top = 540.0
+offset_right = -34.0
+offset_bottom = 636.0
+theme_override_font_sizes/font_size = 70
+
+[node name="leave" type="Button" parent="ending/AnimationPlayer"]
+process_mode = 3
+modulate = Color(0.929483, 0, 0.235728, 1)
+z_index = 1
+z_as_relative = false
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -824.0
+offset_top = -352.0
+offset_right = -500.0
+offset_bottom = -248.0
+grow_horizontal = 2
+grow_vertical = 0
+size_flags_vertical = 7
+theme_override_font_sizes/font_size = 70
+text = "В МЕНЮ"
+
 [connection signal="body_entered" from="score up" to="." method="_on_score_up_body_entered"]
 [connection signal="body_entered" from="score down" to="." method="_on_score_down_body_entered"]
 [connection signal="timeout" from="balltimer" to="." method="_on_balltimer_timeout"]
+[connection signal="pressed" from="ending/AnimationPlayer/leave" to="." method="_on_leave_pressed"]

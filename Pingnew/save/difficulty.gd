@@ -9,6 +9,7 @@ func _ready():
 		config.set_value("difficulty", "bot_speed", 500)
 		config.set_value("difficulty", "player_size", 3)
 		config.set_value("difficulty", "bot_size", 3)
+		config.set_value("difficulty", "bot_name", 'eazy')
 	else:
 		config.load(settings_file_path)
 

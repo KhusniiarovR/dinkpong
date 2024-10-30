@@ -5,10 +5,12 @@ func _ready():
 	get_viewport().size = DisplayServer.screen_get_size()
 	get_tree().get_root().connect("go_back_requested", goback)
 	var color_settings = Configcolor.load_color_settings()
+	var difficulty_settings = Difficulty.load_difficulty_settings()
 	$player1/ColorRect.color = color_settings.color1
 	$cpu/ColorRect.color = color_settings.color3
 	$ball/balltexture.modulate = color_settings.color4
-	
+	$ending/AnimationPlayer/bot_name.text = difficulty_settings.bot_name
+
 func goback():
 	if get_tree().paused:
 		get_tree().paused = false
@@ -36,6 +38,18 @@ func _on_score_up_body_entered(_body):
 
 func _process(_delta):
 	if score[0] == 3:
-		get_tree().change_scene_to_file("res://Scenes/start.tscn")
+		$".".hide()
+		get_tree().paused = true
+		$ending.show()
+		$"ending/фон старт".show()
+		$ending/AnimationPlayer.play("WINNING")
 	elif score[1] == 3:
-		get_tree().change_scene_to_file("res://Scenes/start.tscn")
+		$".".hide()
+		get_tree().paused = true
+		$ending.show()
+		$"ending/фон старт".show()
+		$ending/AnimationPlayer.play("WINNING")
+
+func _on_leave_pressed() -> void:
+	get_tree().paused = false
+	get_tree().change_scene_to_file("res://Scenes/start.tscn")

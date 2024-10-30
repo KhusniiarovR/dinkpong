@@ -1,151 +1,120 @@
-[gd_scene load_steps=25 format=3 uid="uid://dp3h0xgvth2v"]
+[gd_scene load_steps=26 format=3 uid="uid://dp3h0xgvth2v"]
 
-[ext_resource type="Script" path="res://Scripts/player1.gd" id="1_36ell"]
-[ext_resource type="Script" path="res://Scripts/cpu.gd" id="2_2wb8o"]
+[ext_resource type="Script" path="res://Scripts/player.gd" id="1_hwrmi"]
+[ext_resource type="Script" path="res://Scripts/ballbot.gd" id="2_1oqgq"]
 [ext_resource type="Texture2D" uid="uid://bfeb4f7gkvgn" path="res://Sprites/balltexture (1).png" id="4_4n84u"]
 [ext_resource type="PackedScene" uid="uid://c1nkq3fcyd38a" path="res://Scenes/trail.tscn" id="5_5d4uj"]
 [ext_resource type="Script" path="res://Scripts/balltrail.gd" id="6_aap06"]
 [ext_resource type="Texture2D" uid="uid://dfy8rdnmtb6jd" path="res://Sprites/i.svg" id="7_6pown"]
 [ext_resource type="PackedScene" uid="uid://coomb6j6sxjcu" path="res://Scenes/pause.tscn" id="8_b62da"]
 [ext_resource type="Texture2D" uid="uid://wy23bgsqla0e" path="res://Sprites/pausebutton.png" id="9_unvjf"]
-[ext_resource type="AudioStream" uid="uid://dl07dg181u5dd" path="res://Sounds/дынк.mp3" id="10_3wq5n"]
-[ext_resource type="AudioStream" uid="uid://dty35b38ty8kg" path="res://Sounds/Лох.mp3" id="11_7d5ko"]
-[ext_resource type="AudioStream" uid="uid://ko2d770eflli" path="res://Sounds/на лаки.mp3" id="12_y6jbk"]
+[ext_resource type="AudioStream" uid="uid://brhvs6necbim7" path="res://Sounds/Dink_n.mp3" id="10_3wq5n"]
+[ext_resource type="AudioStream" uid="uid://bghrwfof83cj5" path="res://Sounds/Лох.mp3" id="11_7d5ko"]
+[ext_resource type="Script" path="res://Scripts/starrysky.gd" id="12_4yopt"]
+[ext_resource type="AudioStream" uid="uid://bixlusbcdb3kr" path="res://Sounds/на лаки.mp3" id="12_y6jbk"]
+[ext_resource type="Texture2D" uid="uid://ufcs6oc2a8vv" path="res://Sprites/Sky.png" id="13_8aavh"]
 
-[sub_resource type="GDScript" id="GDScript_o7wnt"]
+[sub_resource type="GDScript" id="GDScript_6ll16"]
 script/source = "extends ColorRect
 
-
 var score := [0,0]
-const paddle_speed: int = 600
-const paddle_enemy_speed : int = 400
-const rotation_speed = 75
-
 func _ready():
 	get_viewport().size = DisplayServer.screen_get_size()
 	get_tree().get_root().connect(\"go_back_requested\", goback)
 	var color_settings = Configcolor.load_color_settings()
+	var difficulty_settings = Difficulty.load_difficulty_settings()
 	$player1/ColorRect.color = color_settings.color1
-	#$player2/ColorRect.color = color_settings.color2
-	#$cpuez/ColorRect.color = color_settings.color3
 	$cpu/ColorRect.color = color_settings.color3
 	$ball/balltexture.modulate = color_settings.color4
-	$playuntilanim.play(\"untilanim\")
-	await $playuntilanim.animation_finished
-
+	$ending/AnimationPlayer/bot_name.text = difficulty_settings.bot_name
+	
 func goback():
 	if get_tree().paused:
 		get_tree().paused = false
 		get_tree().change_scene_to_file(\"res://Scenes/start.tscn\")
 	else:
-		$forpause/pausemenu.show()
+		$pausemenu.show()
 		get_tree().paused = true
 
 func _on_balltimer_timeout():
 	$startanim.play(\"timer_anim\")
 	await $startanim.animation_finished
-	$ball.new_ball()
+	$ball.new_ball() 
 
-func _on_scoreleft_1_body_entered(_body):
-	$lucky.play()
-	score[0] += 1
-	$score/player2score.text = str(score[0])
-	$balltimer.start()
-
-func _on_scoreleft_body_entered(_body):
-	$loh.play()
-	score[0] += 1
-	$score/player2score.text = str(score[0])
-	$balltimer.start()
-
-
-func _on_scoreright_body_entered(_body):
-	$loh.play()
+func _on_score_down_body_entered(_body):
+	$audio/loh.play()
 	score[1] += 1
-	$score/playerscore.text = str(score[1])
+	$score/player2score.text = str(score[1])
 	$balltimer.start()
 
+func _on_score_up_body_entered(_body):
+	$audio/lucky.play()
+	score[0] += 1
+	$score/playerscore.text = str(score[0])
+	$balltimer.start()
+
+const rotation_speed = 75
 func _process(_delta):
-	if score[1] == 3:
-		get_tree().change_scene_to_file(\"res://Scenes/start.tscn\")
-	elif score[0] == 3:
-		get_tree().change_scene_to_file(\"res://Scenes/start.tscn\")
+	if score[0] == 3:
+		$\".\".hide()
+		get_tree().paused = true
+		$ending.show()
+		$\"ending/фон старт\".show()
+		$ending/AnimationPlayer.play(\"WINNING\")
+	elif score[1] == 3:
+		$\".\".hide()
+		get_tree().paused = true
+		$ending.show()
+		$\"ending/фон старт\".show()
+		$ending/AnimationPlayer.play(\"WINNING\")
+	
 	$colorrecttotate.rotation += deg_to_rad(rotation_speed * _delta)
 	$colorrecttotate2.rotation -= deg_to_rad(rotation_speed * _delta)
+
+func _on_leave_pressed() -> void:
+	get_tree().paused = false
+	get_tree().change_scene_to_file(\"res://Scenes/start.tscn\")
 "
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_st8w8"]
-size = Vector2(6, 119)
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_obd8f"]
+size = Vector2(40, 2)
 
-[sub_resource type="GDScript" id="GDScript_x6uyc"]
-script/source = "extends CharacterBody2D
+[sub_resource type="GDScript" id="GDScript_r2etx"]
+script/source = "extends StaticBody2D
 
-var win_size : Vector2
-const start_speed : int = 500
-const accel : int = 100
-var speed : int
-var dir : Vector2
-const MAX_Y : float = 0.8
+var ball_pos : Vector2
+var dist : int
+var move_by : int
+var win_height : float
+var p_height : int
+var paddle_speed = 150
 
 func _ready():
-	win_size = get_viewport_rect().size
+	win_height = get_viewport_rect().size.x
+	var difficulty_settings = Difficulty.load_difficulty_settings()
+	paddle_speed = difficulty_settings.bot_speed
+	scale.x = difficulty_settings.bot_size
+	p_height = $ColorRect.get_size().x * scale.x
 
-
-func new_ball():
-	position.x = win_size.x/2
-	@warning_ignore(\"narrowing_conversion\")
-	position.y = randi_range(150, win_size.y-150)
-	speed = start_speed
-	dir = random_direction()
-
-func _physics_process(delta):
-	var collision = move_and_collide(dir * speed * delta)
-	var collider
-	if collision:
-		$\"../dink\".play()
-		collider = collision.get_collider()
-		if collider == $\"../player1\":
-			speed += accel
-			dir = new_direction(collider)
-		elif collider == %cpu :
-			speed += accel
-			dir = new_direction(collider)
-		else:
-			dir = dir.bounce(collision.get_normal())
-
-func random_direction():
-	var new_dir := Vector2()
-	new_dir.x = [1,-1].pick_random()
-	new_dir.y = randf_range(-1,1)
-	return new_dir.normalized()
-
-func new_direction(collider):
-	var ball_y = position.y
-	var pad_y = collider.position.y
-	var dist = ball_y - pad_y
-	var new_dir := Vector2()
-	
-	if dir.x > 0:
-		new_dir.x = -1
-	else:
-		new_dir.x = 1
-	new_dir.y = (dist / (collider.p_height / 2)) * MAX_Y
-	return new_dir.normalized()
+func _process(delta):
+	ball_pos = $\"../ball\".position
+	dist = position.x - ball_pos.x
+	if dist > paddle_speed * delta and dist > 10:
+		move_by = 1.3 * (paddle_speed * delta * (dist / abs(dist)))
+	elif dist <= 10:
+		move_by = dist / 2.5
+	position.x -= move_by
+	position.x = clamp(position.x, p_height/2, win_height - p_height/2)
 "
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_lxvdn"]
-radius = 4.60977
+[sub_resource type="CircleShape2D" id="CircleShape2D_xcubb"]
+radius = 5.0
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_0ntkh"]
-size = Vector2(1152, 32)
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_8pjn8"]
+size = Vector2(20, 1152)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_vqkvr"]
-size = Vector2(1153, 32)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_opbnu"]
-size = Vector2(32, 648)
-
-[sub_resource type="CanvasTexture" id="CanvasTexture_dhms5"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ubvl7"]
+size = Vector2(648, 20)
 
 [sub_resource type="Animation" id="Animation_mvffw"]
 resource_name = "timer_anim"
@@ -168,62 +137,116 @@ _data = {
 "timer_anim": SubResource("Animation_mvffw")
 }
 
-[sub_resource type="Animation" id="Animation_sjydw"]
-resource_name = "untilanim"
-length = 6.4
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_b5kpw"]
+size = Vector2(120, 15)
+
+[sub_resource type="Animation" id="Animation_78hvk"]
+resource_name = "WINNING"
+step = 0.0
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("playuntilanim/untillabel:text")
+tracks/0/path = NodePath("AnimationPlayer/winning:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0.01, 6.3),
-"transitions": PackedFloat32Array(1, 1),
-"update": 1,
-"values": ["ИГРА ИДЁТ ДО 3", ""]
+"times": PackedFloat32Array(0, 0.5, 0.99),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(-500, 430), Vector2(-200, 430), Vector2(91, 430)]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("playuntilanim/untillabel:position")
+tracks/1/path = NodePath("AnimationPlayer/bot_name:position")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0.01, 0.66, 1.60308, 3.74, 4.7576, 6.27),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"times": PackedFloat32Array(0, 0.5, 0.99),
+"transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
-"values": [Vector2(170.5, -200), Vector2(170.5, -50), Vector2(170.5, 100), Vector2(170.5, 100), Vector2(170.5, -50), Vector2(170.5, -200)]
+"values": [Vector2(-500, 540), Vector2(-200, 540), Vector2(91, 540)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("AnimationPlayer/leave:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.5, 0.99),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(-500, 800), Vector2(-200, 800), Vector2(165, 800)]
 }
 
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_d1w0j"]
+[sub_resource type="Animation" id="Animation_hif62"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimationPlayer/winning:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-500, 430)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimationPlayer/bot_name:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-500, 540)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("AnimationPlayer/leave:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-500, 800)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_qnghj"]
 _data = {
-"untilanim": SubResource("Animation_sjydw")
+"RESET": SubResource("Animation_hif62"),
+"WINNING": SubResource("Animation_78hvk")
 }
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_ea8vf"]
-size = Vector2(121, 15)
 
 [node name="chaosnormal" type="ColorRect"]
-offset_right = 1152.0
-offset_bottom = 648.0
-color = Color(0.0352941, 0.0156863, 0.133333, 1)
-script = SubResource("GDScript_o7wnt")
-
-[node name="whiteline" type="ColorRect" parent="."]
-layout_mode = 1
-anchors_preset = 13
-anchor_left = 0.5
-anchor_right = 0.5
+anchors_preset = 15
+anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -8.0
-offset_right = 8.0
 grow_horizontal = 2
 grow_vertical = 2
+color = Color(0.0352941, 0.0156863, 0.133333, 1)
+script = SubResource("GDScript_6ll16")
+
+[node name="whiteline" type="ColorRect" parent="."]
+layout_mode = 0
+offset_top = 568.0
+offset_right = 648.0
+offset_bottom = 584.0
 
 [node name="player1" type="StaticBody2D" parent="."]
-position = Vector2(1082, 324)
-script = ExtResource("1_36ell")
+position = Vector2(324, 1082)
+script = ExtResource("1_hwrmi")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="player1"]
+position = Vector2(0, -18.5)
+shape = SubResource("RectangleShape2D_obd8f")
 
 [node name="ColorRect" type="ColorRect" parent="player1"]
 anchors_preset = 8
@@ -231,21 +254,19 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -10.0
-offset_top = -60.0
-offset_right = 10.0
-offset_bottom = 60.0
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="player1"]
-position = Vector2(-7, 0.5)
-shape = SubResource("RectangleShape2D_st8w8")
-
 [node name="cpu" type="StaticBody2D" parent="."]
-unique_name_in_owner = true
-position = Vector2(50, 324)
-script = ExtResource("2_2wb8o")
+position = Vector2(324, 50)
+script = SubResource("GDScript_r2etx")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="cpu"]
+position = Vector2(0, 19)
+shape = SubResource("RectangleShape2D_obd8f")
 
 [node name="ColorRect" type="ColorRect" parent="cpu"]
 anchors_preset = 8
@@ -253,31 +274,23 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -10.0
-offset_top = -60.0
-offset_right = 10.0
-offset_bottom = 60.0
+offset_left = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
 grow_horizontal = 2
 grow_vertical = 2
-size_flags_horizontal = 8
-size_flags_vertical = 4
-metadata/_edit_use_anchors_ = true
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="cpu"]
-shape = SubResource("RectangleShape2D_st8w8")
 
 [node name="ball" type="CharacterBody2D" parent="."]
-z_index = 2
-position = Vector2(576, 324)
+position = Vector2(324, 576)
 scale = Vector2(2, 2)
 collision_mask = 3
-script = SubResource("GDScript_x6uyc")
+script = ExtResource("2_1oqgq")
 
-[node name="ballcoll" type="CollisionShape2D" parent="ball"]
-shape = SubResource("CircleShape2D_lxvdn")
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ball"]
+shape = SubResource("CircleShape2D_xcubb")
 
 [node name="balltexture" type="Sprite2D" parent="ball"]
-scale = Vector2(0.14, 0.14)
+scale = Vector2(0.155, 0.155)
 texture = ExtResource("4_4n84u")
 
 [node name="trail" parent="ball" instance=ExtResource("5_5d4uj")]
@@ -288,112 +301,73 @@ MAX_LENGTH = 7
 [node name="borders" type="StaticBody2D" parent="."]
 collision_layer = 2
 
-[node name="up" type="CollisionShape2D" parent="borders"]
-position = Vector2(576, -16)
-shape = SubResource("RectangleShape2D_0ntkh")
+[node name="left" type="CollisionShape2D" parent="borders"]
+position = Vector2(-10, 576)
+shape = SubResource("RectangleShape2D_8pjn8")
 
-[node name="down" type="CollisionShape2D" parent="borders"]
-position = Vector2(576, 664)
-shape = SubResource("RectangleShape2D_vqkvr")
+[node name="right" type="CollisionShape2D" parent="borders"]
+position = Vector2(658, 576)
+shape = SubResource("RectangleShape2D_8pjn8")
 
-[node name="scoreleft1" type="Area2D" parent="."]
+[node name="score up" type="Area2D" parent="."]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="scoreleft1"]
-position = Vector2(-16, 324)
-shape = SubResource("RectangleShape2D_opbnu")
+[node name="CollisionShape2D" type="CollisionShape2D" parent="score up"]
+position = Vector2(324, -10)
+shape = SubResource("RectangleShape2D_ubvl7")
 
-[node name="scoreright" type="Area2D" parent="."]
+[node name="score down" type="Area2D" parent="."]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="scoreright"]
-position = Vector2(1168, 324)
-shape = SubResource("RectangleShape2D_opbnu")
+[node name="CollisionShape2D" type="CollisionShape2D" parent="score down"]
+position = Vector2(324, 1162)
+shape = SubResource("RectangleShape2D_ubvl7")
 
-[node name="score" type="CanvasLayer" parent="."]
+[node name="buttons" type="Node" parent="."]
 
-[node name="playerscore" type="Label" parent="score"]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -91.0
-offset_top = -20.0
-offset_right = -31.0
-offset_bottom = 117.0
-grow_horizontal = 2
-grow_vertical = 2
-rotation = 1.5708
-theme_override_font_sizes/font_size = 100
-text = "0"
+[node name="left" type="TouchScreenButton" parent="buttons"]
+show_behind_parent = true
+visibility_layer = 0
+position = Vector2(0, 580)
+scale = Vector2(2.57812, 4.4375)
+texture_normal = ExtResource("7_6pown")
+action = "left"
 
-[node name="player2score" type="Label" parent="score"]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = 80.0
-offset_top = 35.0
-offset_right = 140.0
-offset_bottom = 172.0
-grow_horizontal = 2
-grow_vertical = 2
-rotation = 4.71239
-theme_override_font_sizes/font_size = 100
-text = "0"
+[node name="right" type="TouchScreenButton" parent="buttons"]
+show_behind_parent = true
+visibility_layer = 0
+position = Vector2(324, 580)
+scale = Vector2(2.57812, 4.4375)
+texture_normal = ExtResource("7_6pown")
+action = "right"
+
+[node name="audio" type="Node" parent="."]
+
+[node name="dink" type="AudioStreamPlayer" parent="audio"]
+stream = ExtResource("10_3wq5n")
+volume_db = 5.0
+bus = &"dink"
+
+[node name="loh" type="AudioStreamPlayer" parent="audio"]
+stream = ExtResource("11_7d5ko")
+bus = &"goal"
+
+[node name="lucky" type="AudioStreamPlayer" parent="audio"]
+stream = ExtResource("12_y6jbk")
+bus = &"goal"
 
 [node name="balltimer" type="Timer" parent="."]
 wait_time = 0.5
 one_shot = true
 autostart = true
 
-[node name="left" type="TouchScreenButton" parent="."]
-show_behind_parent = true
-position = Vector2(610, 314)
-scale = Vector2(4.21094, 2.64062)
-texture_normal = ExtResource("7_6pown")
-action = "left"
-
-[node name="right" type="TouchScreenButton" parent="."]
-show_behind_parent = true
-position = Vector2(610, -4)
-scale = Vector2(4.28125, 2.6875)
-texture_normal = ExtResource("7_6pown")
-action = "right"
-
-[node name="forpause" type="CanvasLayer" parent="."]
-
-[node name="pausemenu" parent="forpause" instance=ExtResource("8_b62da")]
+[node name="pausemenu" parent="." instance=ExtResource("8_b62da")]
 visible = false
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
+layout_mode = 1
 
 [node name="pause" type="TouchScreenButton" parent="."]
-top_level = true
-position = Vector2(230, 370)
-rotation = 4.71239
-scale = Vector2(5.05, 5)
+position = Vector2(284, 450)
+scale = Vector2(5, 5)
 texture_normal = ExtResource("9_unvjf")
-texture_pressed = SubResource("CanvasTexture_dhms5")
 action = "stop"
-
-[node name="dink" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("10_3wq5n")
-volume_db = -10.0
-bus = &"dink"
-
-[node name="loh" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("11_7d5ko")
-volume_db = -5.0
-bus = &"goal"
-
-[node name="lucky" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("12_y6jbk")
-volume_db = 10.0
-bus = &"goal"
 
 [node name="startanim" type="AnimationPlayer" parent="."]
 libraries = {
@@ -406,75 +380,146 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -20.0
+offset_left = -36.0
 offset_top = -171.0
-offset_right = 20.0
+offset_right = 4.0
 offset_bottom = 171.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/font_color = Color(1, 0, 0, 1)
 theme_override_font_sizes/font_size = 250
 
-[node name="playuntilanim" type="AnimationPlayer" parent="."]
-libraries = {
-"": SubResource("AnimationLibrary_d1w0j")
-}
+[node name="score" type="CanvasLayer" parent="."]
 
-[node name="untillabel" type="Label" parent="playuntilanim"]
+[node name="playerscore" type="Label" parent="score"]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -405.5
-offset_top = -524.0
-offset_right = 405.5
-offset_bottom = -387.0
+offset_left = -30.0
+offset_top = 74.0
+offset_right = 30.0
+offset_bottom = 211.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_colors/font_color = Color(1, 1, 0, 1)
 theme_override_font_sizes/font_size = 100
+text = "0"
+
+[node name="player2score" type="Label" parent="score"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 30.0
+offset_top = -126.0
+offset_right = 90.0
+offset_bottom = 11.0
+grow_horizontal = 2
+grow_vertical = 2
+rotation = 3.14159
+theme_override_font_sizes/font_size = 100
+text = "0"
 
 [node name="colorrecttotate" type="StaticBody2D" parent="."]
 modulate = Color(0.682353, 1, 0, 1)
-position = Vector2(440, 150)
+position = Vector2(500, 300)
+disable_mode = 2
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="colorrecttotate"]
-shape = SubResource("RectangleShape2D_ea8vf")
-
-[node name="ColorRectrot" type="ColorRect" parent="colorrecttotate"]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
+[node name="ColorRect" type="ColorRect" parent="colorrecttotate"]
 offset_left = -60.0
-offset_top = -7.5
+offset_top = -7.0
 offset_right = 60.0
-offset_bottom = 7.5
-grow_horizontal = 2
-grow_vertical = 2
+offset_bottom = 8.0
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="colorrecttotate"]
+position = Vector2(0, 0.5)
+shape = SubResource("RectangleShape2D_b5kpw")
 
 [node name="colorrecttotate2" type="StaticBody2D" parent="."]
 modulate = Color(0.682353, 1, 0, 1)
-position = Vector2(440, 520)
+position = Vector2(148, 300)
+disable_mode = 2
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="colorrecttotate2"]
-shape = SubResource("RectangleShape2D_ea8vf")
+[node name="ColorRect" type="ColorRect" parent="colorrecttotate2"]
+offset_left = -60.0
+offset_top = -7.0
+offset_right = 60.0
+offset_bottom = 8.0
 
-[node name="ColorRectrot" type="ColorRect" parent="colorrecttotate2"]
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="colorrecttotate2"]
+physics_interpolation_mode = 1
+position = Vector2(0, 0.5)
+shape = SubResource("RectangleShape2D_b5kpw")
+
+[node name="ending" type="Node2D" parent="."]
+process_mode = 3
+visible = false
+
+[node name="фон старт" type="ParallaxBackground" parent="ending"]
+process_mode = 3
+visible = false
+script = ExtResource("12_4yopt")
+
+[node name="ParallaxLayer" type="ParallaxLayer" parent="ending/фон старт"]
+motion_mirroring = Vector2(676, 1177)
+
+[node name="Sky" type="Sprite2D" parent="ending/фон старт/ParallaxLayer"]
+position = Vector2(328, 575.392)
+scale = Vector2(0.412195, 1.14639)
+texture = ExtResource("13_8aavh")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="ending"]
+process_mode = 3
+libraries = {
+"": SubResource("AnimationLibrary_qnghj")
+}
+
+[node name="winning" type="Label" parent="ending/AnimationPlayer"]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -60.0
-offset_top = -7.5
-offset_right = 60.0
-offset_bottom = 7.5
+offset_left = -824.0
+offset_top = -146.0
+offset_right = -358.0
+offset_bottom = -50.0
 grow_horizontal = 2
 grow_vertical = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 70
+text = "ТЫ ПОБЕДИЛ"
 
-[connection signal="body_entered" from="scoreleft1" to="." method="_on_scoreleft_1_body_entered"]
-[connection signal="body_entered" from="scoreright" to="." method="_on_scoreright_body_entered"]
+[node name="bot_name" type="Label" parent="ending/AnimationPlayer"]
+offset_left = -500.0
+offset_top = 540.0
+offset_right = -34.0
+offset_bottom = 636.0
+theme_override_font_sizes/font_size = 70
+
+[node name="leave" type="Button" parent="ending/AnimationPlayer"]
+process_mode = 3
+modulate = Color(0.929483, 0, 0.235728, 1)
+z_index = 1
+z_as_relative = false
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -824.0
+offset_top = -352.0
+offset_right = -500.0
+offset_bottom = -248.0
+grow_horizontal = 2
+grow_vertical = 0
+size_flags_vertical = 7
+theme_override_font_sizes/font_size = 70
+text = "В МЕНЮ"
+
+[connection signal="body_entered" from="score up" to="." method="_on_score_up_body_entered"]
+[connection signal="body_entered" from="score down" to="." method="_on_score_down_body_entered"]
 [connection signal="timeout" from="balltimer" to="." method="_on_balltimer_timeout"]
+[connection signal="pressed" from="ending/AnimationPlayer/leave" to="." method="_on_leave_pressed"]

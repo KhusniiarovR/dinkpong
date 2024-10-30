@@ -16,15 +16,10 @@ func _ready():
 
 func _process(delta):
 	ball_pos = $"../ball".position
-	@warning_ignore("narrowing_conversion")
 	dist = position.x - ball_pos.x
-	if dist > paddle_speed * delta:
-		move_by = paddle_speed * delta * (dist / abs(dist))
+	if dist > paddle_speed * delta and dist > 10:
+		move_by = 1.3 * (paddle_speed * delta * (dist / abs(dist)))
 	elif dist <= 10:
-		move_by = dist
-	else:
-		#dist <= paddle_speed * delta #and dist != 0:
-		move_by = paddle_speed * delta * (dist / abs(dist))
+		move_by = dist / 2
 	position.x -= move_by
-	@warning_ignore("integer_division")
 	position.x = clamp(position.x, p_height/2, win_height - p_height/2)

@@ -1,12 +1,19 @@
-[gd_scene load_steps=8 format=3 uid="uid://djb8heldcf235"]
+[gd_scene load_steps=10 format=3 uid="uid://djb8heldcf235"]
 
 [ext_resource type="Script" path="res://Scripts/settings.gd" id="1_1ivv6"]
 [ext_resource type="Script" path="res://Scripts/starrysky.gd" id="3_6paav"]
 [ext_resource type="AudioStream" uid="uid://brhvs6necbim7" path="res://Sounds/Dink_n.mp3" id="3_csksw"]
+[ext_resource type="Texture2D" uid="uid://dafn8d7kwuhh6" path="res://Sprites/buttons1.png" id="3_jqiyl"]
 [ext_resource type="Texture2D" uid="uid://cm8hameegblnv" path="res://Sprites/back_arrow.png" id="4_piylg"]
 [ext_resource type="AudioStream" uid="uid://bghrwfof83cj5" path="res://Sounds/Лох.mp3" id="6_tur6f"]
 [ext_resource type="Texture2D" uid="uid://ufcs6oc2a8vv" path="res://Sprites/Sky.png" id="7_7v2un"]
 [ext_resource type="AudioStream" uid="uid://bixlusbcdb3kr" path="res://Sounds/на лаки.mp3" id="7_lybrt"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_6uj8o"]
+texture = ExtResource("3_jqiyl")
+texture_margin_left = 5.0
+texture_margin_right = 5.0
+modulate_color = Color(1, 1, 1, 0.658824)
 
 [node name="settings" type="Control"]
 layout_mode = 3
@@ -84,6 +91,10 @@ offset_bottom = 68.5
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_font_sizes/font_size = 50
+theme_override_styles/hover_pressed = SubResource("StyleBoxTexture_6uj8o")
+theme_override_styles/hover = SubResource("StyleBoxTexture_6uj8o")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_6uj8o")
+theme_override_styles/normal = SubResource("StyleBoxTexture_6uj8o")
 text = "звук дынк"
 
 [node name="check sounds loh" type="Button" parent="."]
@@ -101,6 +112,10 @@ offset_bottom = 174.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_font_sizes/font_size = 50
+theme_override_styles/hover_pressed = SubResource("StyleBoxTexture_6uj8o")
+theme_override_styles/hover = SubResource("StyleBoxTexture_6uj8o")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_6uj8o")
+theme_override_styles/normal = SubResource("StyleBoxTexture_6uj8o")
 text = "звук лох"
 
 [node name="check sounds lucky" type="Button" parent="."]
@@ -118,6 +133,10 @@ offset_bottom = 279.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_font_sizes/font_size = 50
+theme_override_styles/hover_pressed = SubResource("StyleBoxTexture_6uj8o")
+theme_override_styles/hover = SubResource("StyleBoxTexture_6uj8o")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_6uj8o")
+theme_override_styles/normal = SubResource("StyleBoxTexture_6uj8o")
 text = "звук лаки"
 
 [node name="dink" type="AudioStreamPlayer" parent="."]
