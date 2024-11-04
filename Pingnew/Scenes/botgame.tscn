@@ -12,7 +12,7 @@
 [ext_resource type="AudioStream" uid="uid://bixlusbcdb3kr" path="res://Sounds/на лаки.mp3" id="6_pikh5"]
 [ext_resource type="PackedScene" uid="uid://coomb6j6sxjcu" path="res://Scenes/pause.tscn" id="7_krc6b"]
 [ext_resource type="Texture2D" uid="uid://wy23bgsqla0e" path="res://Sprites/pausebutton.png" id="8_jec7j"]
-[ext_resource type="AudioStream" uid="uid://brhvs6necbim7" path="res://Sounds/Dink_n.mp3" id="9_rsw55"]
+[ext_resource type="AudioStream" uid="uid://dplky6vqt7ybg" path="res://Sounds/dink_n.mp3" id="9_6b3bx"]
 [ext_resource type="Script" path="res://Scripts/starrysky.gd" id="14_1yccp"]
 [ext_resource type="Texture2D" uid="uid://ufcs6oc2a8vv" path="res://Sprites/Sky.png" id="15_4qvyd"]
 
@@ -62,7 +62,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0, 0.5, 0.99),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
-"values": [Vector2(-500, 430), Vector2(-200, 430), Vector2(91, 430)]
+"values": [Vector2(-600, 540), Vector2(-200, 540), Vector2(91, 540)]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -74,7 +74,7 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0, 0.5, 0.99),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
-"values": [Vector2(-500, 540), Vector2(-200, 540), Vector2(91, 540)]
+"values": [Vector2(-600, 430), Vector2(-200, 430), Vector2(91, 430)]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
@@ -89,49 +89,50 @@ tracks/2/keys = {
 "values": [Vector2(-500, 800), Vector2(-200, 800), Vector2(165, 800)]
 }
 
-[sub_resource type="Animation" id="Animation_hif62"]
-length = 0.001
+[sub_resource type="Animation" id="Animation_ukteq"]
+resource_name = "losing"
+step = 0.0
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("AnimationPlayer/winning:position")
+tracks/0/path = NodePath("AnimationPlayer/bot_name:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
+"times": PackedFloat32Array(0, 0.5, 0.99),
+"transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
-"values": [Vector2(-500, 430)]
+"values": [Vector2(-500, 430), Vector2(-200, 430), Vector2(91, 430)]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("AnimationPlayer/bot_name:position")
+tracks/1/path = NodePath("AnimationPlayer/leave:position")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
+"times": PackedFloat32Array(0, 0.5, 0.99),
+"transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
-"values": [Vector2(-500, 540)]
+"values": [Vector2(-500, 800), Vector2(-200, 800), Vector2(165, 800)]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("AnimationPlayer/leave:position")
+tracks/2/path = NodePath("AnimationPlayer/losing:position")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
+"times": PackedFloat32Array(0, 0.5, 0.99),
+"transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
-"values": [Vector2(-500, 800)]
+"values": [Vector2(-600, 540), Vector2(-200, 540), Vector2(91, 540)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_qnghj"]
 _data = {
-"RESET": SubResource("Animation_hif62"),
-"WINNING": SubResource("Animation_78hvk")
+"WINNING": SubResource("Animation_78hvk"),
+"losing": SubResource("Animation_ukteq")
 }
 
 [node name="main" type="ColorRect"]
@@ -251,7 +252,7 @@ action = "right"
 [node name="audio" type="Node" parent="."]
 
 [node name="dink" type="AudioStreamPlayer" parent="audio"]
-stream = ExtResource("9_rsw55")
+stream = ExtResource("9_6b3bx")
 volume_db = 5.0
 bus = &"dink"
 
@@ -361,21 +362,37 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -824.0
-offset_top = -146.0
-offset_right = -358.0
-offset_bottom = -50.0
+offset_left = -924.0
+offset_top = -36.0
+offset_right = -408.0
+offset_bottom = 60.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 4
 theme_override_font_sizes/font_size = 70
-text = "ТЫ ПОБЕДИЛ"
+text = "был побежден"
+
+[node name="losing" type="Label" parent="ending/AnimationPlayer"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -924.0
+offset_top = -36.0
+offset_right = -408.0
+offset_bottom = 60.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 70
+text = "победил тебя"
 
 [node name="bot_name" type="Label" parent="ending/AnimationPlayer"]
-offset_left = -500.0
-offset_top = 540.0
-offset_right = -34.0
-offset_bottom = 636.0
+offset_left = -600.0
+offset_top = 430.0
+offset_right = -134.0
+offset_bottom = 526.0
 theme_override_font_sizes/font_size = 70
 
 [node name="leave" type="Button" parent="ending/AnimationPlayer"]

@@ -10,12 +10,12 @@ config_version=5
 
 [application]
 
-config/name="pingnew"
+config/name="pingdink"
 config/name_localized={
-"ru": "лучшая игра"
+"ru": "ДЫНК!!!!"
 }
-config/description="даааа"
-config/version="1.11"
+config/description="...."
+config/version="1.13"
 run/main_scene="res://Scenes/start.tscn"
 config/use_custom_user_dir=true
 config/custom_user_dir_name="pingpongsaves"
@@ -24,8 +24,8 @@ config/features=PackedStringArray("4.3", "Mobile")
 boot_splash/bg_color=Color(0.248328, 0.380827, 0.286199, 1)
 boot_splash/image="res://Icons/splash.png"
 boot_splash/use_filter=false
-config/icon="res://Icons/icon.png"
-boot_splash/minimum_display_time=200
+config/icon="res://Icons/icon192.png"
+boot_splash/minimum_display_time=150
 
 [audio]
 
@@ -36,6 +36,7 @@ buses/default_bus_layout="res://Sounds/default_bus_layout.tres"
 Configfile="*res://save/configfile.gd"
 Configcolor="*res://save/configcolor.gd"
 Difficulty="*res://save/difficulty.gd"
+Advancements="*res://save/advancements.gd"
 
 [display]
 
@@ -86,3 +87,4 @@ locale/locale_filter_mode=1
 
 renderer/rendering_method="gl_compatibility"
 renderer/rendering_method.mobile="gl_compatibility"
+textures/vram_compression/import_etc2_astc=true

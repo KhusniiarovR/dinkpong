@@ -18,8 +18,8 @@ func _process(delta):
 	ball_pos = $"../ball".position
 	dist = position.x - ball_pos.x
 	if dist > paddle_speed * delta and dist > 10:
-		move_by = 1.3 * (paddle_speed * delta * (dist / abs(dist)))
+		move_by = 1.7 * (paddle_speed * delta * (dist / abs(dist)))
 	elif dist <= 10:
-		move_by = dist / 2
+		move_by = dist / 3
 	position.x -= move_by
 	position.x = clamp(position.x, p_height/2, win_height - p_height/2)

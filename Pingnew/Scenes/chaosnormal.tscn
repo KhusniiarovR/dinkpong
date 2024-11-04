@@ -6,9 +6,9 @@
 [ext_resource type="PackedScene" uid="uid://c1nkq3fcyd38a" path="res://Scenes/trail.tscn" id="5_5d4uj"]
 [ext_resource type="Script" path="res://Scripts/balltrail.gd" id="6_aap06"]
 [ext_resource type="Texture2D" uid="uid://dfy8rdnmtb6jd" path="res://Sprites/i.svg" id="7_6pown"]
+[ext_resource type="AudioStream" uid="uid://dplky6vqt7ybg" path="res://Sounds/dink_n.mp3" id="7_m2pc2"]
 [ext_resource type="PackedScene" uid="uid://coomb6j6sxjcu" path="res://Scenes/pause.tscn" id="8_b62da"]
 [ext_resource type="Texture2D" uid="uid://wy23bgsqla0e" path="res://Sprites/pausebutton.png" id="9_unvjf"]
-[ext_resource type="AudioStream" uid="uid://brhvs6necbim7" path="res://Sounds/Dink_n.mp3" id="10_3wq5n"]
 [ext_resource type="AudioStream" uid="uid://bghrwfof83cj5" path="res://Sounds/Лох.mp3" id="11_7d5ko"]
 [ext_resource type="Script" path="res://Scripts/starrysky.gd" id="12_4yopt"]
 [ext_resource type="AudioStream" uid="uid://bixlusbcdb3kr" path="res://Sounds/на лаки.mp3" id="12_y6jbk"]
@@ -53,23 +53,24 @@ func _on_score_up_body_entered(_body):
 	$score/playerscore.text = str(score[0])
 	$balltimer.start()
 
-const rotation_speed = 75
-func _process(_delta):
+const rotation_speed = 85
+func _process(delta):
 	if score[0] == 3:
 		$\".\".hide()
 		get_tree().paused = true
 		$ending.show()
 		$\"ending/фон старт\".show()
 		$ending/AnimationPlayer.play(\"WINNING\")
+		Advancements.save_goals_settings(\"normal_h\", +1)
 	elif score[1] == 3:
 		$\".\".hide()
 		get_tree().paused = true
 		$ending.show()
 		$\"ending/фон старт\".show()
-		$ending/AnimationPlayer.play(\"WINNING\")
+		$ending/AnimationPlayer.play(\"losing\")
 	
-	$colorrecttotate.rotation += deg_to_rad(rotation_speed * _delta)
-	$colorrecttotate2.rotation -= deg_to_rad(rotation_speed * _delta)
+	$colorrecttotate.rotation -= deg_to_rad(rotation_speed * delta)
+	$colorrecttotate2.rotation += deg_to_rad(rotation_speed * delta)
 
 func _on_leave_pressed() -> void:
 	get_tree().paused = false
@@ -153,7 +154,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0, 0.5, 0.99),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
-"values": [Vector2(-500, 430), Vector2(-200, 430), Vector2(91, 430)]
+"values": [Vector2(-600, 540), Vector2(-200, 540), Vector2(91, 540)]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -165,7 +166,7 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0, 0.5, 0.99),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
-"values": [Vector2(-500, 540), Vector2(-200, 540), Vector2(91, 540)]
+"values": [Vector2(-600, 430), Vector2(-200, 430), Vector2(91, 430)]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
@@ -180,49 +181,50 @@ tracks/2/keys = {
 "values": [Vector2(-500, 800), Vector2(-200, 800), Vector2(165, 800)]
 }
 
-[sub_resource type="Animation" id="Animation_hif62"]
-length = 0.001
+[sub_resource type="Animation" id="Animation_ukteq"]
+resource_name = "losing"
+step = 0.0
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("AnimationPlayer/winning:position")
+tracks/0/path = NodePath("AnimationPlayer/bot_name:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
+"times": PackedFloat32Array(0, 0.5, 0.99),
+"transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
-"values": [Vector2(-500, 430)]
+"values": [Vector2(-500, 430), Vector2(-200, 430), Vector2(91, 430)]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("AnimationPlayer/bot_name:position")
+tracks/1/path = NodePath("AnimationPlayer/leave:position")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
+"times": PackedFloat32Array(0, 0.5, 0.99),
+"transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
-"values": [Vector2(-500, 540)]
+"values": [Vector2(-500, 800), Vector2(-200, 800), Vector2(165, 800)]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("AnimationPlayer/leave:position")
+tracks/2/path = NodePath("AnimationPlayer/losing:position")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
+"times": PackedFloat32Array(0, 0.5, 0.99),
+"transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
-"values": [Vector2(-500, 800)]
+"values": [Vector2(-600, 540), Vector2(-200, 540), Vector2(91, 540)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_qnghj"]
 _data = {
-"RESET": SubResource("Animation_hif62"),
-"WINNING": SubResource("Animation_78hvk")
+"WINNING": SubResource("Animation_78hvk"),
+"losing": SubResource("Animation_ukteq")
 }
 
 [node name="chaosnormal" type="ColorRect"]
@@ -342,7 +344,7 @@ action = "right"
 [node name="audio" type="Node" parent="."]
 
 [node name="dink" type="AudioStreamPlayer" parent="audio"]
-stream = ExtResource("10_3wq5n")
+stream = ExtResource("7_m2pc2")
 volume_db = 5.0
 bus = &"dink"
 
@@ -360,6 +362,7 @@ one_shot = true
 autostart = true
 
 [node name="pausemenu" parent="." instance=ExtResource("8_b62da")]
+process_mode = 3
 visible = false
 layout_mode = 1
 
@@ -482,21 +485,37 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -824.0
-offset_top = -146.0
-offset_right = -358.0
-offset_bottom = -50.0
+offset_left = -924.0
+offset_top = -36.0
+offset_right = -408.0
+offset_bottom = 60.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 4
 theme_override_font_sizes/font_size = 70
-text = "ТЫ ПОБЕДИЛ"
+text = "был побежден"
+
+[node name="losing" type="Label" parent="ending/AnimationPlayer"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -924.0
+offset_top = -36.0
+offset_right = -408.0
+offset_bottom = 60.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 70
+text = "победил тебя"
 
 [node name="bot_name" type="Label" parent="ending/AnimationPlayer"]
-offset_left = -500.0
-offset_top = 540.0
-offset_right = -34.0
-offset_bottom = 636.0
+offset_left = -600.0
+offset_top = 430.0
+offset_right = -134.0
+offset_bottom = 526.0
 theme_override_font_sizes/font_size = 70
 
 [node name="leave" type="Button" parent="ending/AnimationPlayer"]
@@ -522,4 +541,3 @@ text = "В МЕНЮ"
 [connection signal="body_entered" from="score up" to="." method="_on_score_up_body_entered"]
 [connection signal="body_entered" from="score down" to="." method="_on_score_down_body_entered"]
 [connection signal="timeout" from="balltimer" to="." method="_on_balltimer_timeout"]
-[connection signal="pressed" from="ending/AnimationPlayer/leave" to="." method="_on_leave_pressed"]

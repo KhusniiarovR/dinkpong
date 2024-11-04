@@ -10,7 +10,6 @@ func _ready():
 	scale.x = difficulty_settings.player_size
 	p_height = $ColorRect.get_size().x * scale.x
 
-
 func _process(delta):
 	if Input.is_action_pressed("left_1"):
 		position.x -= paddle_speed * delta

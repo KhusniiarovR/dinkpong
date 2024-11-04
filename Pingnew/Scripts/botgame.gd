@@ -1,11 +1,10 @@
 extends ColorRect
-
 var score := [0,0]
+var difficulty_settings = Difficulty.load_difficulty_settings()
 func _ready():
 	get_viewport().size = DisplayServer.screen_get_size()
 	get_tree().get_root().connect("go_back_requested", goback)
 	var color_settings = Configcolor.load_color_settings()
-	var difficulty_settings = Difficulty.load_difficulty_settings()
 	$player1/ColorRect.color = color_settings.color1
 	$cpu/ColorRect.color = color_settings.color3
 	$ball/balltexture.modulate = color_settings.color4
@@ -43,12 +42,18 @@ func _process(_delta):
 		$ending.show()
 		$"ending/фон старт".show()
 		$ending/AnimationPlayer.play("WINNING")
+		if difficulty_settings.bot_speed == 220:
+			Advancements.save_goals_settings("eazy", +1)
+		elif difficulty_settings.bot_speed == 420:
+			Advancements.save_goals_settings("normal", +1)
+		elif difficulty_settings.bot_speed == 600:
+			Advancements.save_goals_settings("hard", +1)
 	elif score[1] == 3:
 		$".".hide()
 		get_tree().paused = true
 		$ending.show()
 		$"ending/фон старт".show()
-		$ending/AnimationPlayer.play("WINNING")
+		$ending/AnimationPlayer.play("losing")
 
 func _on_leave_pressed() -> void:
 	get_tree().paused = false

@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://Scripts/settings.gd" id="1_1ivv6"]
 [ext_resource type="Script" path="res://Scripts/starrysky.gd" id="3_6paav"]
-[ext_resource type="AudioStream" uid="uid://brhvs6necbim7" path="res://Sounds/Dink_n.mp3" id="3_csksw"]
+[ext_resource type="AudioStream" uid="uid://dplky6vqt7ybg" path="res://Sounds/Dink_n.mp3" id="3_csksw"]
 [ext_resource type="Texture2D" uid="uid://dafn8d7kwuhh6" path="res://Sprites/buttons1.png" id="3_jqiyl"]
 [ext_resource type="Texture2D" uid="uid://cm8hameegblnv" path="res://Sprites/back_arrow.png" id="4_piylg"]
 [ext_resource type="AudioStream" uid="uid://bghrwfof83cj5" path="res://Sounds/Лох.mp3" id="6_tur6f"]

@@ -1,9 +1,9 @@
-[gd_scene load_steps=22 format=3 uid="uid://dmb4jh65cknub"]
+[gd_scene load_steps=25 format=3 uid="uid://dmb4jh65cknub"]
 
-[ext_resource type="Script" path="res://Scripts/player1.gd" id="2_4hlp8"]
+[ext_resource type="Script" path="res://Scripts/player.gd" id="2_gylbl"]
 [ext_resource type="Script" path="res://Scripts/player2.gd" id="3_6rjkt"]
+[ext_resource type="Script" path="res://Scripts/ball2.gd" id="3_bv4qa"]
 [ext_resource type="Texture2D" uid="uid://bfeb4f7gkvgn" path="res://Sprites/balltexture (1).png" id="4_mr2i8"]
-[ext_resource type="Script" path="res://Scripts/ball.gd" id="4_pe1ui"]
 [ext_resource type="Texture2D" uid="uid://dfy8rdnmtb6jd" path="res://Sprites/i.svg" id="5_6rnai"]
 [ext_resource type="PackedScene" uid="uid://coomb6j6sxjcu" path="res://Scenes/pause.tscn" id="6_erbuq"]
 [ext_resource type="PackedScene" uid="uid://c1nkq3fcyd38a" path="res://Scenes/trail.tscn" id="6_s82dj"]
@@ -12,73 +12,79 @@
 [ext_resource type="Texture2D" uid="uid://wy23bgsqla0e" path="res://Sprites/pausebutton.png" id="10_13jno"]
 [ext_resource type="AudioStream" uid="uid://brhvs6necbim7" path="res://Sounds/Dink_n.mp3" id="10_cwavf"]
 [ext_resource type="AudioStream" uid="uid://bixlusbcdb3kr" path="res://Sounds/на лаки.mp3" id="12_of4hl"]
+[ext_resource type="Script" path="res://Scripts/starrysky.gd" id="14_dkqfh"]
+[ext_resource type="Texture2D" uid="uid://ufcs6oc2a8vv" path="res://Sprites/Sky.png" id="15_eqh18"]
 
-[sub_resource type="GDScript" id="GDScript_e24m3"]
-resource_local_to_scene = true
-resource_name = "main"
+[sub_resource type="GDScript" id="GDScript_dxda3"]
+resource_name = "2pmode"
 script/source = "extends ColorRect
 
-
 var score := [0,0]
-
 func _ready():
 	get_viewport().size = DisplayServer.screen_get_size()
 	get_tree().get_root().connect(\"go_back_requested\", goback)
 	var color_settings = Configcolor.load_color_settings()
+	var difficulty_settings = Difficulty.load_difficulty_settings()
 	$player1/ColorRect.color = color_settings.color1
 	$player2/ColorRect.color = color_settings.color2
 	$ball/balltexture.modulate = color_settings.color4
-
+	$ending/AnimationPlayer/bot_name.text = difficulty_settings.bot_name
 
 func goback():
 	if get_tree().paused:
 		get_tree().paused = false
 		get_tree().change_scene_to_file(\"res://Scenes/start.tscn\")
 	else:
-		$forpause/pausemenu.show()
+		$pausemenu.show()
 		get_tree().paused = true
 
 func _on_balltimer_timeout():
-	$AnimationPlayer.play(\"timer_anim\")
-	await $AnimationPlayer.animation_finished
+	$startanim.play(\"timer_anim\")
+	await $startanim.animation_finished
 	$ball.new_ball()
 
-func _on_scoreleft_body_entered(_body):
-	$loh.play()
-	score[0] += 1
-	$score/playerscore.text = str(score[0])
-	$balltimer.start()
-
-
-func _on_scoreright_body_entered(_body):
-	$loh.play()
+func _on_score_down_body_entered(_body):
+	$audio/loh.play()
 	score[1] += 1
 	$score/player2score.text = str(score[1])
 	$balltimer.start()
 
+func _on_score_up_body_entered(_body):
+	$audio/lucky.play()
+	score[0] += 1
+	$score/playerscore.text = str(score[0])
+	$balltimer.start()
+
 func _process(_delta):
 	if score[0] == 3:
-		get_tree().change_scene_to_file(\"res://Scenes/start.tscn\")
+		$\".\".hide()
+		get_tree().paused = true
+		$ending.show()
+		$\"ending/фон старт\".show()
+		$ending/AnimationPlayer.play(\"WINNING\")
 	elif score[1] == 3:
-		get_tree().change_scene_to_file(\"res://Scenes/start.tscn\")
+		$\".\".hide()
+		get_tree().paused = true
+		$ending.show()
+		$\"ending/фон старт\".show()
+		$ending/AnimationPlayer.play(\"losing\")
+
+func _on_leave_pressed() -> void:
+	get_tree().paused = false
+	get_tree().change_scene_to_file(\"res://Scenes/start.tscn\")
 "
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_st8w8"]
-size = Vector2(40, 3)
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_obd8f"]
+size = Vector2(40, 2)
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_nbx0r"]
-radius = 4.60977
+[sub_resource type="CircleShape2D" id="CircleShape2D_xcubb"]
+radius = 5.0
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_0ntkh"]
-size = Vector2(13, 1152)
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_8pjn8"]
+size = Vector2(20, 1152)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_vqkvr"]
-size = Vector2(15, 1152)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_opbnu"]
-size = Vector2(648, 10)
-
-[sub_resource type="CanvasTexture" id="CanvasTexture_dhms5"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ubvl7"]
+size = Vector2(648, 20)
 
 [sub_resource type="Animation" id="Animation_mvffw"]
 resource_name = "timer_anim"
@@ -86,7 +92,7 @@ length = 2.7
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("AnimationPlayer/timer_animation:text")
+tracks/0/path = NodePath("startanim/timer_animation:text")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -101,6 +107,92 @@ _data = {
 "timer_anim": SubResource("Animation_mvffw")
 }
 
+[sub_resource type="Animation" id="Animation_78hvk"]
+resource_name = "WINNING"
+step = 0.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimationPlayer/winning:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5, 0.99),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(-600, 540), Vector2(-200, 540), Vector2(91, 540)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimationPlayer/bot_name:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.5, 0.99),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(-600, 430), Vector2(-200, 430), Vector2(91, 430)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("AnimationPlayer/leave:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.5, 0.99),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(-500, 800), Vector2(-200, 800), Vector2(165, 800)]
+}
+
+[sub_resource type="Animation" id="Animation_ukteq"]
+resource_name = "losing"
+step = 0.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimationPlayer/bot_name:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5, 0.99),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(-500, 430), Vector2(-200, 430), Vector2(91, 430)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimationPlayer/leave:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.5, 0.99),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(-500, 800), Vector2(-200, 800), Vector2(165, 800)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("AnimationPlayer/losing:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.5, 0.99),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(-600, 540), Vector2(-200, 540), Vector2(91, 540)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_qnghj"]
+_data = {
+"WINNING": SubResource("Animation_78hvk"),
+"losing": SubResource("Animation_ukteq")
+}
+
 [node name="2pmode" type="ColorRect"]
 anchors_preset = 15
 anchor_right = 1.0
@@ -108,7 +200,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.0352941, 0.0156863, 0.133333, 1)
-script = SubResource("GDScript_e24m3")
+script = SubResource("GDScript_dxda3")
 
 [node name="whiteline" type="ColorRect" parent="."]
 layout_mode = 0
@@ -118,7 +210,11 @@ offset_bottom = 584.0
 
 [node name="player1" type="StaticBody2D" parent="."]
 position = Vector2(324, 1082)
-script = ExtResource("2_4hlp8")
+script = ExtResource("2_gylbl")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="player1"]
+position = Vector2(0, -18.5)
+shape = SubResource("RectangleShape2D_obd8f")
 
 [node name="ColorRect" type="ColorRect" parent="player1"]
 anchors_preset = 8
@@ -132,41 +228,18 @@ offset_right = 20.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="player1"]
-position = Vector2(0, -18.5)
-shape = SubResource("RectangleShape2D_st8w8")
-
-[node name="player2" type="StaticBody2D" parent="."]
-position = Vector2(324, 50)
-script = ExtResource("3_6rjkt")
-
-[node name="ColorRect" type="ColorRect" parent="player2"]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -20.0
-offset_right = 20.0
-offset_bottom = 20.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="player2"]
-position = Vector2(0, 18.5)
-shape = SubResource("RectangleShape2D_st8w8")
-
 [node name="ball" type="CharacterBody2D" parent="."]
+unique_name_in_owner = true
 position = Vector2(324, 576)
 scale = Vector2(2, 2)
 collision_mask = 3
-script = ExtResource("4_pe1ui")
+script = ExtResource("3_bv4qa")
 
-[node name="ballcoll" type="CollisionShape2D" parent="ball"]
-shape = SubResource("CircleShape2D_nbx0r")
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ball"]
+shape = SubResource("CircleShape2D_xcubb")
 
 [node name="balltexture" type="Sprite2D" parent="ball"]
-scale = Vector2(0.14, 0.14)
+scale = Vector2(0.155, 0.155)
 texture = ExtResource("4_mr2i8")
 
 [node name="trail" parent="ball" instance=ExtResource("6_s82dj")]
@@ -177,25 +250,94 @@ MAX_LENGTH = 7
 [node name="borders" type="StaticBody2D" parent="."]
 collision_layer = 2
 
-[node name="up" type="CollisionShape2D" parent="borders"]
-position = Vector2(-6.5, 576)
-shape = SubResource("RectangleShape2D_0ntkh")
+[node name="left" type="CollisionShape2D" parent="borders"]
+position = Vector2(-10, 576)
+shape = SubResource("RectangleShape2D_8pjn8")
 
-[node name="down" type="CollisionShape2D" parent="borders"]
-position = Vector2(655.5, 576)
-shape = SubResource("RectangleShape2D_vqkvr")
+[node name="right" type="CollisionShape2D" parent="borders"]
+position = Vector2(658, 576)
+shape = SubResource("RectangleShape2D_8pjn8")
 
-[node name="scoreleft" type="Area2D" parent="."]
+[node name="score up" type="Area2D" parent="."]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="scoreleft"]
-position = Vector2(324, -9)
-shape = SubResource("RectangleShape2D_opbnu")
+[node name="CollisionShape2D" type="CollisionShape2D" parent="score up"]
+position = Vector2(324, -10)
+shape = SubResource("RectangleShape2D_ubvl7")
 
-[node name="scoreright" type="Area2D" parent="."]
+[node name="score down" type="Area2D" parent="."]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="scoreright"]
-position = Vector2(324, 1157)
-shape = SubResource("RectangleShape2D_opbnu")
+[node name="CollisionShape2D" type="CollisionShape2D" parent="score down"]
+position = Vector2(324, 1162)
+shape = SubResource("RectangleShape2D_ubvl7")
+
+[node name="buttons" type="Node" parent="."]
+
+[node name="left" type="TouchScreenButton" parent="buttons"]
+show_behind_parent = true
+visibility_layer = 0
+position = Vector2(0, 580)
+scale = Vector2(2.57812, 4.4375)
+texture_normal = ExtResource("5_6rnai")
+action = "left"
+
+[node name="right" type="TouchScreenButton" parent="buttons"]
+show_behind_parent = true
+visibility_layer = 0
+position = Vector2(324, 580)
+scale = Vector2(2.57812, 4.4375)
+texture_normal = ExtResource("5_6rnai")
+action = "right"
+
+[node name="audio" type="Node" parent="."]
+
+[node name="dink" type="AudioStreamPlayer" parent="audio"]
+stream = ExtResource("10_cwavf")
+volume_db = 5.0
+bus = &"dink"
+
+[node name="loh" type="AudioStreamPlayer" parent="audio"]
+stream = ExtResource("8_un50c")
+bus = &"goal"
+
+[node name="lucky" type="AudioStreamPlayer" parent="audio"]
+stream = ExtResource("12_of4hl")
+bus = &"goal"
+
+[node name="balltimer" type="Timer" parent="."]
+wait_time = 0.5
+one_shot = true
+autostart = true
+
+[node name="pausemenu" parent="." instance=ExtResource("6_erbuq")]
+process_mode = 3
+visible = false
+layout_mode = 1
+
+[node name="pause" type="TouchScreenButton" parent="."]
+position = Vector2(284, 450)
+scale = Vector2(5, 5)
+texture_normal = ExtResource("10_13jno")
+action = "stop"
+
+[node name="startanim" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_w41hr")
+}
+
+[node name="timer_animation" type="Label" parent="startanim"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -36.0
+offset_top = -171.0
+offset_right = 4.0
+offset_bottom = 171.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 0, 0, 1)
+theme_override_font_sizes/font_size = 250
 
 [node name="score" type="CanvasLayer" parent="."]
 
@@ -206,9 +348,9 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -30.0
-offset_top = 44.0
+offset_top = 74.0
 offset_right = 30.0
-offset_bottom = 181.0
+offset_bottom = 211.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_font_sizes/font_size = 100
@@ -221,54 +363,96 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = 30.0
-offset_top = -56.0
+offset_top = -126.0
 offset_right = 90.0
-offset_bottom = 81.0
+offset_bottom = 11.0
 grow_horizontal = 2
 grow_vertical = 2
 rotation = 3.14159
 theme_override_font_sizes/font_size = 100
 text = "0"
 
-[node name="balltimer" type="Timer" parent="."]
-one_shot = true
-autostart = true
-
-[node name="left" type="TouchScreenButton" parent="."]
-show_behind_parent = true
-position = Vector2(0, 577)
-scale = Vector2(2.53906, 4.50781)
-texture_normal = ExtResource("5_6rnai")
-action = "left"
-
-[node name="right" type="TouchScreenButton" parent="."]
-show_behind_parent = true
-position = Vector2(324, 600)
-scale = Vector2(2.51562, 4.36719)
-texture_normal = ExtResource("5_6rnai")
-action = "right"
-
-[node name="forpause" type="CanvasLayer" parent="."]
-
-[node name="pausemenu" parent="forpause" instance=ExtResource("6_erbuq")]
+[node name="ending" type="Node2D" parent="."]
+process_mode = 3
 visible = false
+
+[node name="фон старт" type="ParallaxBackground" parent="ending"]
+process_mode = 3
+visible = false
+script = ExtResource("14_dkqfh")
+
+[node name="ParallaxLayer" type="ParallaxLayer" parent="ending/фон старт"]
+motion_mirroring = Vector2(676, 1177)
+
+[node name="Sky" type="Sprite2D" parent="ending/фон старт/ParallaxLayer"]
+position = Vector2(328, 575.392)
+scale = Vector2(0.412195, 1.14639)
+texture = ExtResource("15_eqh18")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="ending"]
+process_mode = 3
+libraries = {
+"": SubResource("AnimationLibrary_qnghj")
+}
+
+[node name="winning" type="Label" parent="ending/AnimationPlayer"]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
+offset_left = -924.0
+offset_top = -36.0
+offset_right = -408.0
+offset_bottom = 60.0
+grow_horizontal = 2
+grow_vertical = 2
 size_flags_horizontal = 4
-size_flags_vertical = 4
+theme_override_font_sizes/font_size = 70
+text = "был побежден"
 
-[node name="pause" type="TouchScreenButton" parent="."]
-modulate = Color(0.958955, 0, 0.335786, 1)
-top_level = true
-position = Vector2(620, 520)
-rotation = 1.5708
-scale = Vector2(7, 7)
-texture_normal = ExtResource("10_13jno")
-texture_pressed = SubResource("CanvasTexture_dhms5")
-action = "stop"
+[node name="losing" type="Label" parent="ending/AnimationPlayer"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -924.0
+offset_top = -36.0
+offset_right = -408.0
+offset_bottom = 60.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 70
+text = "победил тебя"
+
+[node name="bot_name" type="Label" parent="ending/AnimationPlayer"]
+offset_left = -600.0
+offset_top = 430.0
+offset_right = -134.0
+offset_bottom = 526.0
+theme_override_font_sizes/font_size = 70
+
+[node name="leave" type="Button" parent="ending/AnimationPlayer"]
+process_mode = 3
+modulate = Color(0.929483, 0, 0.235728, 1)
+z_index = 1
+z_as_relative = false
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -824.0
+offset_top = -352.0
+offset_right = -500.0
+offset_bottom = -248.0
+grow_horizontal = 2
+grow_vertical = 0
+size_flags_vertical = 7
+theme_override_font_sizes/font_size = 70
+text = "В МЕНЮ"
 
 [node name="left_1" type="TouchScreenButton" parent="."]
 show_behind_parent = true
@@ -279,45 +463,32 @@ action = "left_1"
 [node name="right_1" type="TouchScreenButton" parent="."]
 show_behind_parent = true
 position = Vector2(324, 0)
-scale = Vector2(2.46875, 4.125)
+scale = Vector2(2.46875, 4.17188)
 texture_normal = ExtResource("5_6rnai")
 action = "right_1"
 
-[node name="dink" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("10_cwavf")
-volume_db = 5.0
-bus = &"dink"
+[node name="player2" type="StaticBody2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(324, 50)
+script = ExtResource("3_6rjkt")
 
-[node name="loh" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("8_un50c")
-volume_db = -5.0
-bus = &"goal"
+[node name="CollisionShape2D" type="CollisionShape2D" parent="player2"]
+position = Vector2(0, -18.5)
+shape = SubResource("RectangleShape2D_obd8f")
 
-[node name="lucky" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("12_of4hl")
-volume_db = 10.0
-bus = &"goal"
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-libraries = {
-"": SubResource("AnimationLibrary_w41hr")
-}
-
-[node name="timer_animation" type="Label" parent="AnimationPlayer"]
+[node name="ColorRect" type="ColorRect" parent="player2"]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -20.0
-offset_top = -171.0
+offset_top = -20.0
 offset_right = 20.0
-offset_bottom = 171.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_colors/font_color = Color(1, 0, 0, 1)
-theme_override_font_sizes/font_size = 250
 
-[connection signal="body_entered" from="scoreleft" to="." method="_on_scoreleft_body_entered"]
-[connection signal="body_entered" from="scoreright" to="." method="_on_scoreright_body_entered"]
+[connection signal="body_entered" from="score up" to="." method="_on_score_up_body_entered"]
+[connection signal="body_entered" from="score down" to="." method="_on_score_down_body_entered"]
 [connection signal="timeout" from="balltimer" to="." method="_on_balltimer_timeout"]
+[connection signal="pressed" from="ending/AnimationPlayer/leave" to="." method="_on_leave_pressed"]
